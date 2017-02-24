@@ -1,7 +1,7 @@
 defmodule Web.User do
   use Web.Web, :model
 
-  @primary_key {:id, :integer, []}
+  @primary_key {:id, :binary_id, []}
   schema "users" do
     field :name, :string
     field :email, :string
