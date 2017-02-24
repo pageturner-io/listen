@@ -13,8 +13,18 @@ use Mix.Config
 # which you typically run after static files are built.
 config :web, Web.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/manifest.json"
+  url: [host: {:system, "HOST"}, port: {:system, "PORT"}],
+  cache_static_manifest: "priv/static/manifest.json",
+  server: true,
+  root: ".",
+  version: Mix.Project.config[:version],
+  secret_key_base: {:system, "SECRET_KEY_BASE"}
+
+config :web, Web.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: {:system, "DATABASE_URL"},
+  pool_size: {:system, "POOL_SIZE"},
+  ssl: false
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -56,6 +66,10 @@ config :logger, level: :info
 #     config :web, Web.Endpoint, server: true
 #
 
+# Configure Guardian
+config :guardian, Guardian,
+  secret_key: {:system, "GUARDIAN_SECRET_KEY"}
+
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
-import_config "prod.secret.exs"
+# import_config "prod.secret.exs"
