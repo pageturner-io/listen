@@ -41,10 +41,11 @@ defmodule Web.Hivent.Consumers.UserSignedInTest do
 
   describe "when a user who does not exist logs in" do
     test "it creates a new user with the event payload" do
+      uuid = Ecto.UUID.generate()
       event = %Event{
         payload: %{
           "user" => %{
-            "id" => "25",
+            "id" => uuid,
             "name" => "New name",
             "email" => "new_email@foobar.com"
           }
@@ -53,7 +54,7 @@ defmodule Web.Hivent.Consumers.UserSignedInTest do
 
       UserSignedIn.handle_events([{event, "queue"}], self(), %{})
 
-      updated_user = Repo.get(User, 25)
+      updated_user = Repo.get(User, uuid)
 
       assert updated_user.name == "New name"
       assert updated_user.email == "new_email@foobar.com"

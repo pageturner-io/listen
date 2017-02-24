@@ -28,7 +28,7 @@ defmodule Web.Hivent.Consumers.UserSignedIn do
     }
 
     case Repo.get(User, user["id"]) do
-      nil  -> %User{id: user["id"] |> String.to_integer}
+      nil  -> %User{id: user["id"]}
       user -> user
     end
     |> User.changeset(changes)

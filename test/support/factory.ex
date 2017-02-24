@@ -5,7 +5,7 @@ defmodule Web.Factory do
 
   def user_factory do
     %User{
-      id: sequence("") |> String.to_integer,
+      id: Ecto.UUID.generate(),
       name: "Bob Belcher",
       email: sequence(:email, &"email-#{&1}@example.com")
     }
