@@ -12,6 +12,7 @@ defmodule Web.Router do
   pipeline :browser_auth do
     plug Web.Auth.Plug.VerifyCookie
     plug Guardian.Plug.LoadResource
+    plug Guardian.Plug.EnsureAuthenticated, handler: Web.ErrorController
   end
 
   pipeline :api do
