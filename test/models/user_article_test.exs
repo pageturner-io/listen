@@ -3,7 +3,7 @@ defmodule Web.UserArticleTest do
 
   alias Web.UserArticle
 
-  @valid_attrs %{}
+  @valid_attrs %{user_id: Ecto.UUID.generate(), article_id: Ecto.UUID.generate()}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
