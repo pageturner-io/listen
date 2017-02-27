@@ -19,9 +19,15 @@ defmodule Web.Router do
   end
 
   scope "/", Web do
-    pipe_through [:browser, :browser_auth]
+    pipe_through [:browser]
 
     get "/", PageController, :index
+  end
+
+  scope "/articles", Web do
+    pipe_through [:browser, :browser_auth]
+
+    resources "/", ArticleController
   end
 
   # Other scopes may use custom stacks.
