@@ -29,6 +29,22 @@ defmodule Listen.ConnCase do
 
       # The default endpoint for testing
       @endpoint Listen.Endpoint
+
+      def guardian_login(%Listen.User{} = user), do: guardian_login(build_conn(), user, :token, [])
+      def guardian_login(%Listen.User{} = user, token), do: guardian_login(build_conn(), user, token, [])
+      def guardian_login(%Listen.User{} = user, token, opts), do: guardian_login(build_conn(), user, token, opts)
+
+      def guardian_login(%Plug.Conn{} = conn, user), do: guardian_login(conn, user, :token, [])
+      def guardian_login(%Plug.Conn{} = conn, user, token), do: guardian_login(conn, user, token, [])
+      def guardian_login(%Plug.Conn{} = conn, user, token, opts) do
+        conn = bypass_through(conn, Listen.Router, [:browser])
+          |> get("/")
+          |> Guardian.Plug.sign_in(user, token, opts)
+
+        put_resp_cookie(conn, "pageturner_identity", Guardian.Plug.current_token(conn))
+          |> send_resp(200, "Flush the session yo")
+          |> recycle()
+      end
     end
   end
 
