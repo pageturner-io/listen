@@ -1,12 +1,12 @@
-defmodule Web.Web do
+defmodule Listen.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use Web.Web, :controller
-      use Web.Web, :view
+      use Listen.Web, :controller
+      use Listen.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -33,12 +33,12 @@ defmodule Web.Web do
     quote do
       use Phoenix.Controller
 
-      alias Web.Repo
+      alias Listen.Repo
       import Ecto
       import Ecto.Query
 
-      import Web.Router.Helpers
-      import Web.Gettext
+      import Listen.Router.Helpers
+      import Listen.Gettext
     end
   end
 
@@ -52,9 +52,9 @@ defmodule Web.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import Web.Router.Helpers
-      import Web.ErrorHelpers
-      import Web.Gettext
+      import Listen.Router.Helpers
+      import Listen.ErrorHelpers
+      import Listen.Gettext
     end
   end
 
@@ -68,10 +68,10 @@ defmodule Web.Web do
     quote do
       use Phoenix.Channel
 
-      alias Web.Repo
+      alias Listen.Repo
       import Ecto
       import Ecto.Query
-      import Web.Gettext
+      import Listen.Gettext
     end
   end
 

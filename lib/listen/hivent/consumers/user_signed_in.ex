@@ -1,5 +1,5 @@
-defmodule Web.Hivent.Consumers.UserSignedIn do
-  alias Web.{User, Repo}
+defmodule Listen.Hivent.Consumers.UserSignedIn do
+  alias Listen.{User, Repo}
 
   use GenStage
 

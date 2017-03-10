@@ -1,5 +1,5 @@
-defmodule Web.Router do
-  use Web.Web, :router
+defmodule Listen.Router do
+  use Listen.Web, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -10,7 +10,7 @@ defmodule Web.Router do
   end
 
   pipeline :browser_auth do
-    plug Web.Auth.Plug.VerifyCookie
+    plug Listen.Auth.Plug.VerifyCookie
     plug Guardian.Plug.LoadResource
   end
 
@@ -18,14 +18,14 @@ defmodule Web.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", Web do
+  scope "/", Listen do
     pipe_through [:browser, :browser_auth]
 
     get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Web do
+  # scope "/api", Listen do
   #   pipe_through :api
   # end
 end

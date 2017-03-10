@@ -1,4 +1,4 @@
-defmodule Web.ChannelCase do
+defmodule Listen.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -20,22 +20,22 @@ defmodule Web.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
-      alias Web.Repo
+      alias Listen.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
 
       # The default endpoint for testing
-      @endpoint Web.Endpoint
+      @endpoint Listen.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Web.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Listen.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Web.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Listen.Repo, {:shared, self()})
     end
 
     :ok

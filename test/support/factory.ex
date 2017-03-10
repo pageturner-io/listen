@@ -1,7 +1,7 @@
-defmodule Web.Factory do
-  use ExMachina.Ecto, repo: Web.Repo
+defmodule Listen.Factory do
+  use ExMachina.Ecto, repo: Listen.Repo
 
-  alias Web.{User}
+  alias Listen.{User}
 
   def user_factory do
     %User{

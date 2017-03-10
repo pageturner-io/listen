@@ -1,4 +1,4 @@
-defmodule Web.Auth.GuardianSerializer do
+defmodule Listen.Auth.GuardianSerializer do
   @moduledoc """
   The Token serializer used by Guardian to encode and
   decode resources into and from JWTs.
@@ -6,8 +6,8 @@ defmodule Web.Auth.GuardianSerializer do
 
   @behaviour Guardian.Serializer
 
-  alias Web.Repo
-  alias Web.User
+  alias Listen.Repo
+  alias Listen.User
 
   def for_token(user = %User{}), do: {:ok, "User:#{user.id}"}
   def for_token(_), do: {:error, "Unknown resource type"}

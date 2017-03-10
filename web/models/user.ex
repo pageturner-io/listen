@@ -1,5 +1,5 @@
-defmodule Web.User do
-  use Web.Web, :model
+defmodule Listen.User do
+  use Listen.Web, :model
 
   @primary_key {:id, :binary_id, []}
   schema "users" do

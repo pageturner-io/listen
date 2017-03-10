@@ -1,14 +1,14 @@
-defmodule Web.Endpoint do
-  use Phoenix.Endpoint, otp_app: :web
+defmodule Listen.Endpoint do
+  use Phoenix.Endpoint, otp_app: :listen
 
-  socket "/socket", Web.UserSocket
+  socket "/socket", Listen.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
   # when deploying your static files in production.
   plug Plug.Static,
-    at: "/", from: :web, gzip: false,
+    at: "/", from: :listen, gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
@@ -38,5 +38,5 @@ defmodule Web.Endpoint do
     key: "_web_key",
     signing_salt: "1BL1NQvh"
 
-  plug Web.Router
+  plug Listen.Router
 end

@@ -1,7 +1,7 @@
-defmodule Web.UserTest do
-  use Web.ModelCase
+defmodule Listen.UserTest do
+  use Listen.ModelCase
 
-  alias Web.User
+  alias Listen.User
 
   @valid_attrs %{email: "some content", name: "some content"}
 

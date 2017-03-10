@@ -1,4 +1,4 @@
-defmodule Web.ModelCase do
+defmodule Listen.ModelCase do
   @moduledoc """
   This module defines the test case to be used by
   model tests.
@@ -16,20 +16,20 @@ defmodule Web.ModelCase do
 
   using do
     quote do
-      alias Web.Repo
+      alias Listen.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Web.ModelCase
+      import Listen.ModelCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Web.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Listen.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Web.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Listen.Repo, {:shared, self()})
     end
 
     :ok
@@ -59,7 +59,7 @@ defmodule Web.ModelCase do
   """
   def errors_on(struct, data) do
     struct.__struct__.changeset(struct, data)
-    |> Ecto.Changeset.traverse_errors(&Web.ErrorHelpers.translate_error/1)
+    |> Ecto.Changeset.traverse_errors(&Listen.ErrorHelpers.translate_error/1)
     |> Enum.flat_map(fn {key, errors} -> for msg <- errors, do: {key, msg} end)
   end
 end
