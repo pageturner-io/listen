@@ -6,6 +6,8 @@ defmodule Listen.User do
     field :name, :string
     field :email, :string
 
+    many_to_many :articles, Listen.Article, join_through: Listen.UserArticle
+
     timestamps()
   end
 

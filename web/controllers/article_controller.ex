@@ -4,8 +4,9 @@ defmodule Listen.ArticleController do
 
   alias Listen.Article
 
-  def index(conn, _params, _current_user, _claims) do
-    articles = Repo.all(Article)
+  def index(conn, _params, current_user, _claims) do
+    articles = Repo.preload(current_user, :articles).articles
+
     render(conn, "index.html", articles: articles)
   end
 
@@ -14,10 +15,11 @@ defmodule Listen.ArticleController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"article" => article_params}, _current_user, _claims) do
+  def create(conn, %{"article" => article_params}, current_user, _claims) do
     changeset = Article.changeset(%Article{}, article_params)
+    |> Ecto.Changeset.put_assoc(:users, [current_user])
 
-    case Repo.insert(changeset) do
+    case Repo.insert(changeset, on_conflict: [set: [url: article_params["url"]]], conflict_target: :url) do
       {:ok, _article} ->
         conn
         |> put_flash(:info, "Article created successfully.")

@@ -4,7 +4,7 @@ defmodule Listen.ArticleControllerTest do
   import Listen.Factory
 
   alias Listen.Article
-  @valid_attrs %{url: "some content"}
+  @valid_attrs %{url: "https://example.com"}
   @invalid_attrs %{}
 
   describe "without a logged in user" do
@@ -22,40 +22,54 @@ defmodule Listen.ArticleControllerTest do
 
     setup %{conn: conn} do
       user = insert(:user)
+      other_user = insert(:user)
 
       {:ok, %{
           user: user,
+          other_user: other_user,
           conn: guardian_login(conn, user)
         }
       }
     end
 
-    test "lists all entries on index", %{conn: conn} do
+    test "lists all articles submitted by user on index", %{conn: conn, user: user, other_user: other_user} do
+      article = Repo.insert!(%Article{url: "https://example.com"})
+      other_article = Repo.insert!(%Article{url: "https://foobar.com"})
+
+      Repo.preload(user, :articles) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:articles, [article]) |> Repo.update!
+      Repo.preload(other_user, :articles) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:articles, [other_article]) |> Repo.update!
+
       conn = get conn, article_path(conn, :index)
 
-      assert html_response(conn, 200) =~ "Listing articles"
+      assert html_response(conn, 200) =~ article.url
+      refute html_response(conn, 200) =~ other_article.url
     end
 
-    test "renders form for new resources", %{conn: conn} do
+    test "renders form for new articles", %{conn: conn} do
       conn = get conn, article_path(conn, :new)
 
       assert html_response(conn, 200) =~ "New article"
     end
 
-    test "creates resource and redirects when data is valid", %{conn: conn} do
+    test "creates article and redirects when data is valid", %{conn: conn, user: user} do
       conn = post conn, article_path(conn, :create), article: @valid_attrs
 
+      article = Repo.get_by(Article, @valid_attrs)
+      user_article = Repo.preload(user, :articles).articles
+      |> Enum.find(fn(a) -> a.url == @valid_attrs.url end)
+
       assert redirected_to(conn) == article_path(conn, :index)
-      assert Repo.get_by(Article, @valid_attrs)
+      assert article
+      assert user_article == article
     end
 
-    test "does not create resource and renders errors when data is invalid", %{conn: conn} do
+    test "does not create article and renders errors when data is invalid", %{conn: conn} do
       conn = post conn, article_path(conn, :create), article: @invalid_attrs
 
       assert html_response(conn, 200) =~ "New article"
     end
 
-    test "shows chosen resource", %{conn: conn} do
+    test "shows chosen article", %{conn: conn} do
       article = Repo.insert! %Article{}
       conn = get conn, article_path(conn, :show, article)
 
@@ -68,26 +82,26 @@ defmodule Listen.ArticleControllerTest do
       end
     end
 
-    test "renders form for editing chosen resource", %{conn: conn} do
+    test "renders form for editing chosen article", %{conn: conn} do
       article = Repo.insert! %Article{}
       conn = get conn, article_path(conn, :edit, article)
       assert html_response(conn, 200) =~ "Edit article"
     end
 
-    test "updates chosen resource and redirects when data is valid", %{conn: conn} do
+    test "updates chosen article and redirects when data is valid", %{conn: conn} do
       article = Repo.insert! %Article{}
       conn = put conn, article_path(conn, :update, article), article: @valid_attrs
       assert redirected_to(conn) == article_path(conn, :show, article)
       assert Repo.get_by(Article, @valid_attrs)
     end
 
-    test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
+    test "does not update chosen article and renders errors when data is invalid", %{conn: conn} do
       article = Repo.insert! %Article{}
       conn = put conn, article_path(conn, :update, article), article: @invalid_attrs
       assert html_response(conn, 200) =~ "Edit article"
     end
 
-    test "deletes chosen resource", %{conn: conn} do
+    test "deletes chosen article", %{conn: conn} do
       article = Repo.insert! %Article{}
       conn = delete conn, article_path(conn, :delete, article)
       assert redirected_to(conn) == article_path(conn, :index)
