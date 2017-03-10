@@ -1,7 +1,7 @@
-defmodule Web.ArticleTest do
-  use Web.ModelCase
+defmodule Listen.ArticleTest do
+  use Listen.ModelCase
 
-  alias Web.Article
+  alias Listen.Article
 
   @valid_attrs %{url: "some content"}
   @invalid_attrs %{}

@@ -1,3 +1,3 @@
-defmodule Web.ArticleView do
-  use Web.Web, :view
+defmodule Listen.ArticleView do
+  use Listen.Web, :view
 end

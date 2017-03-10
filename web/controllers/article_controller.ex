@@ -1,8 +1,8 @@
-defmodule Web.ArticleController do
-  use Web.Web, :controller
+defmodule Listen.ArticleController do
+  use Listen.Web, :controller
   use Guardian.Phoenix.Controller
 
-  alias Web.Article
+  alias Listen.Article
 
   def index(conn, _params, _current_user, _claims) do
     articles = Repo.all(Article)

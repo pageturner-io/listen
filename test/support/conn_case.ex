@@ -1,4 +1,4 @@
-defmodule Web.ConnCase do
+defmodule Listen.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -20,24 +20,24 @@ defmodule Web.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      alias Web.Repo
+      alias Listen.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
-      import Web.Router.Helpers
+      import Listen.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Web.Endpoint
+      @endpoint Listen.Endpoint
 
-      def guardian_login(%Web.User{} = user), do: guardian_login(build_conn(), user, :token, [])
-      def guardian_login(%Web.User{} = user, token), do: guardian_login(build_conn(), user, token, [])
-      def guardian_login(%Web.User{} = user, token, opts), do: guardian_login(build_conn(), user, token, opts)
+      def guardian_login(%Listen.User{} = user), do: guardian_login(build_conn(), user, :token, [])
+      def guardian_login(%Listen.User{} = user, token), do: guardian_login(build_conn(), user, token, [])
+      def guardian_login(%Listen.User{} = user, token, opts), do: guardian_login(build_conn(), user, token, opts)
 
       def guardian_login(%Plug.Conn{} = conn, user), do: guardian_login(conn, user, :token, [])
       def guardian_login(%Plug.Conn{} = conn, user, token), do: guardian_login(conn, user, token, [])
       def guardian_login(%Plug.Conn{} = conn, user, token, opts) do
-        conn = bypass_through(conn, Web.Router, [:browser])
+        conn = bypass_through(conn, Listen.Router, [:browser])
           |> get("/")
           |> Guardian.Plug.sign_in(user, token, opts)
 
@@ -49,10 +49,10 @@ defmodule Web.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Web.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Listen.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Web.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Listen.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

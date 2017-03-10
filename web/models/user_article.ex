@@ -1,5 +1,5 @@
-defmodule Web.UserArticle do
-  use Web.Web, :model
+defmodule Listen.UserArticle do
+  use Listen.Web, :model
 
   @primary_key false
   schema "user_articles" do

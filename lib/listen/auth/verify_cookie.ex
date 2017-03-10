@@ -1,4 +1,4 @@
-defmodule Web.Auth.Plug.VerifyCookie do
+defmodule Listen.Auth.Plug.VerifyCookie do
   @moduledoc """
   Use this plug to verify a token contained in a cookie.
   ## Example

@@ -1,4 +1,4 @@
-defmodule Web do
+defmodule Listen do
   use Application
 
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
@@ -9,24 +9,24 @@ defmodule Web do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
-      supervisor(Web.Repo, []),
+      supervisor(Listen.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(Web.Endpoint, []),
-      # Start your own worker by calling: Web.Worker.start_link(arg1, arg2, arg3)
-      # worker(Web.Worker, [arg1, arg2, arg3]),
-      worker(Web.Hivent.Consumers.UserSignedIn, [])
+      supervisor(Listen.Endpoint, []),
+      # Start your own worker by calling: Listen.Worker.start_link(arg1, arg2, arg3)
+      # worker(Listen.Worker, [arg1, arg2, arg3]),
+      worker(Listen.Hivent.Consumers.UserSignedIn, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Web.Supervisor]
+    opts = [strategy: :one_for_one, name: Listen.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    Web.Endpoint.config_change(changed, removed)
+    Listen.Endpoint.config_change(changed, removed)
     :ok
   end
 end

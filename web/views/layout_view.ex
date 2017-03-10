@@ -1,3 +1,3 @@
-defmodule Web.LayoutView do
-  use Web.Web, :view
+defmodule Listen.LayoutView do
+  use Listen.Web, :view
 end

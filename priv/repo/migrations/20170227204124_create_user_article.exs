@@ -1,4 +1,4 @@
-defmodule Web.Repo.Migrations.CreateUserArticle do
+defmodule Listen.Repo.Migrations.CreateUserArticle do
   use Ecto.Migration
 
   def change do

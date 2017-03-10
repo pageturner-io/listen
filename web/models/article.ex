@@ -1,5 +1,5 @@
-defmodule Web.Article do
-  use Web.Web, :model
+defmodule Listen.Article do
+  use Listen.Web, :model
 
   schema "articles" do
     field :url, :string

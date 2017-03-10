@@ -1,5 +1,5 @@
-defmodule Web.ErrorController do
-  use Web.Web, :controller
+defmodule Listen.ErrorController do
+  use Listen.Web, :controller
 
   def unauthenticated(conn, _params) do
     conn

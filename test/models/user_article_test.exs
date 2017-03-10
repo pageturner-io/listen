@@ -1,7 +1,7 @@
-defmodule Web.UserArticleTest do
-  use Web.ModelCase
+defmodule Listen.UserArticleTest do
+  use Listen.ModelCase
 
-  alias Web.UserArticle
+  alias Listen.UserArticle
 
   @valid_attrs %{user_id: Ecto.UUID.generate(), article_id: Ecto.UUID.generate()}
   @invalid_attrs %{}

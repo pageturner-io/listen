@@ -1,9 +1,9 @@
-defmodule Web.ArticleControllerTest do
-  use Web.ConnCase
+defmodule Listen.ArticleControllerTest do
+  use Listen.ConnCase
 
-  import Web.Factory
+  import Listen.Factory
 
-  alias Web.Article
+  alias Listen.Article
   @valid_attrs %{url: "some content"}
   @invalid_attrs %{}
 

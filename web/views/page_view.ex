@@ -1,3 +1,3 @@
-defmodule Web.PageView do
-  use Web.Web, :view
+defmodule Listen.PageView do
+  use Listen.Web, :view
 end

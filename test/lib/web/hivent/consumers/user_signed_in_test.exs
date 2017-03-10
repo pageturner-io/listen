@@ -1,11 +1,11 @@
-defmodule Web.Hivent.Consumers.UserSignedInTest do
+defmodule Listen.Hivent.Consumers.UserSignedInTest do
   use ExUnit.Case, async: true
 
-  import Web.Factory
+  import Listen.Factory
 
   alias Hivent.Event
-  alias Web.Hivent.Consumers.UserSignedIn
-  alias Web.{User, Repo}
+  alias Listen.Hivent.Consumers.UserSignedIn
+  alias Listen.{User, Repo}
 
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)

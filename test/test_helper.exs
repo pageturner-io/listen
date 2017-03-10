@@ -2,4 +2,4 @@
 
 ExUnit.start
 
-Ecto.Adapters.SQL.Sandbox.mode(Web.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Listen.Repo, :manual)
