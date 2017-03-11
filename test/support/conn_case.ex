@@ -1,4 +1,4 @@
-defmodule Listen.ConnCase do
+defmodule Listen.Web.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -21,23 +21,24 @@ defmodule Listen.ConnCase do
       use Phoenix.ConnTest
 
       alias Listen.Repo
+      alias Listen.Accounts.User
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
-      import Listen.Router.Helpers
+      import Listen.Web.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Listen.Endpoint
+      @endpoint Listen.Web.Endpoint
 
-      def guardian_login(%Listen.User{} = user), do: guardian_login(build_conn(), user, :token, [])
-      def guardian_login(%Listen.User{} = user, token), do: guardian_login(build_conn(), user, token, [])
-      def guardian_login(%Listen.User{} = user, token, opts), do: guardian_login(build_conn(), user, token, opts)
+      def guardian_login(%User{} = user), do: guardian_login(build_conn(), user, :token, [])
+      def guardian_login(%User{} = user, token), do: guardian_login(build_conn(), user, token, [])
+      def guardian_login(%User{} = user, token, opts), do: guardian_login(build_conn(), user, token, opts)
 
       def guardian_login(%Plug.Conn{} = conn, user), do: guardian_login(conn, user, :token, [])
       def guardian_login(%Plug.Conn{} = conn, user, token), do: guardian_login(conn, user, token, [])
       def guardian_login(%Plug.Conn{} = conn, user, token, opts) do
-        conn = bypass_through(conn, Listen.Router, [:browser])
+        conn = bypass_through(conn, Listen.Web.Router, [:browser])
           |> get("/")
           |> Guardian.Plug.sign_in(user, token, opts)
 

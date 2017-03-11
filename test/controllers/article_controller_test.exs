@@ -1,5 +1,5 @@
 defmodule Listen.ArticleControllerTest do
-  use Listen.ConnCase
+  use Listen.Web.ConnCase
 
   import Listen.Factory
 
