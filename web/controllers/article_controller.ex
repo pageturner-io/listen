@@ -2,7 +2,7 @@ defmodule Listen.ArticleController do
   use Listen.Web, :controller
   use Guardian.Phoenix.Controller
 
-  alias Listen.Article
+  alias Listen.{Article, UserArticle}
 
   def index(conn, _params, current_user, _claims) do
     articles = Repo.preload(current_user, :articles).articles
@@ -17,9 +17,8 @@ defmodule Listen.ArticleController do
 
   def create(conn, %{"article" => article_params}, current_user, _claims) do
     changeset = Article.changeset(%Article{}, article_params)
-    |> Ecto.Changeset.put_assoc(:users, [current_user])
 
-    case Repo.insert(changeset, on_conflict: [set: [url: article_params["url"]]], conflict_target: :url) do
+    case create_article_with_user(changeset, current_user) do
       {:ok, _article} ->
         conn
         |> put_flash(:info, "Article created successfully.")
@@ -34,35 +33,30 @@ defmodule Listen.ArticleController do
     render(conn, "show.html", article: article)
   end
 
-  def edit(conn, %{"id" => id}, _current_user, _claims) do
-    article = Repo.get!(Article, id)
-    changeset = Article.changeset(article)
-    render(conn, "edit.html", article: article, changeset: changeset)
-  end
 
-  def update(conn, %{"id" => id, "article" => article_params}, _current_user, _claims) do
-    article = Repo.get!(Article, id)
-    changeset = Article.changeset(article, article_params)
-
-    case Repo.update(changeset) do
-      {:ok, article} ->
-        conn
-        |> put_flash(:info, "Article updated successfully.")
-        |> redirect(to: article_path(conn, :show, article))
-      {:error, changeset} ->
-        render(conn, "edit.html", article: article, changeset: changeset)
-    end
-  end
-
-  def delete(conn, %{"id" => id}, _current_user, _claims) do
-    article = Repo.get!(Article, id)
-
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(article)
+  def delete(conn, %{"id" => article_id}, current_user, _claims) do
+    from(entry in UserArticle, where: entry.user_id == ^current_user.id and entry.article_id == ^article_id)
+    |> Repo.delete_all
 
     conn
     |> put_flash(:info, "Article deleted successfully.")
     |> redirect(to: article_path(conn, :index))
+  end
+
+  defp create_article_with_user(changeset, user) do
+    if changeset.valid? do
+      url = Ecto.Changeset.get_field(changeset, :url)
+
+      case Repo.get_by(Article, url: url) do
+        nil -> Repo.insert!(changeset)
+        article -> article
+      end
+      |> Repo.preload(:users)
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:users, [user])
+      |> Repo.update
+    else
+      {:error, %{changeset | action: :insert}}
+    end
   end
 end

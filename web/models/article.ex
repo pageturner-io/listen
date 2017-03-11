@@ -4,7 +4,7 @@ defmodule Listen.Article do
   schema "articles" do
     field :url, :string
 
-    many_to_many :users, Listen.User, join_through: Listen.UserArticle
+    many_to_many :users, Listen.User, join_through: Listen.UserArticle, on_delete: :delete_all, on_replace: :delete
 
     timestamps()
   end
