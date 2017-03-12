@@ -1,4 +1,4 @@
-FROM elixir:1.3
+FROM elixir:1.4
 
 MAINTAINER Bruno Abrantes <bruno@brunoabrantes.com>
 
@@ -13,7 +13,7 @@ ADD . /app
 
 WORKDIR /app
 
-RUN rm -rf deps node_modules
+RUN rm -rf deps assets/node_modules
 
 RUN apt-get update
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
@@ -23,9 +23,11 @@ RUN mix local.hex --force
 RUN mix local.rebar --force_ssl
 
 RUN mix deps.get
-RUN npm install
-RUN npm run deploy
-RUN mix compile
-RUN mix phoenix.digest
 
-CMD ["mix", "phoenix.server"]
+RUN cd assets && npm install
+RUN cd assets && npm run deploy
+
+RUN mix compile
+RUN mix phx.digest
+
+CMD ["mix", "phx.server"]

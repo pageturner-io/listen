@@ -1,5 +1,5 @@
 defmodule Listen.Hivent.Consumers.UserSignedIn do
-  alias Listen.{User, Repo}
+  alias Listen.Accounts
 
   use GenStage
 
@@ -27,11 +27,13 @@ defmodule Listen.Hivent.Consumers.UserSignedIn do
       name: user["name"]
     }
 
-    case Repo.get(User, user["id"]) do
-      nil  -> %User{id: user["id"]}
+    case Accounts.get_user(user["id"]) do
+      nil  ->
+        with {:ok, user} <- Accounts.create_user(%{id: user["id"]}) do
+          user
+        end
       user -> user
     end
-    |> User.changeset(changes)
-    |> Repo.insert_or_update!
+    |> Accounts.update_user(changes)
   end
 end

@@ -1,21 +1,21 @@
-defmodule Listen.ErrorViewTest do
-  use Listen.ConnCase, async: true
+defmodule Listen.Web.ErrorViewTest do
+  use Listen.Web.ConnCase, async: true
 
   # Bring render/3 and render_to_string/3 for testing custom views
   import Phoenix.View
 
   test "renders 404.html" do
-    assert render_to_string(Listen.ErrorView, "404.html", []) ==
+    assert render_to_string(Listen.Web.ErrorView, "404.html", []) ==
            "Page not found"
   end
 
   test "render 500.html" do
-    assert render_to_string(Listen.ErrorView, "500.html", []) ==
+    assert render_to_string(Listen.Web.ErrorView, "500.html", []) ==
            "Internal server error"
   end
 
   test "render any other" do
-    assert render_to_string(Listen.ErrorView, "505.html", []) ==
+    assert render_to_string(Listen.Web.ErrorView, "505.html", []) ==
            "Internal server error"
   end
 end

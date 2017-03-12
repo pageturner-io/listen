@@ -6,17 +6,15 @@ defmodule Listen.Auth.GuardianSerializer do
 
   @behaviour Guardian.Serializer
 
-  alias Listen.Repo
-  alias Listen.User
+  alias Listen.Accounts
+  alias Accounts.User
 
   def for_token(user = %User{}), do: {:ok, "User:#{user.id}"}
   def for_token(_), do: {:error, "Unknown resource type"}
 
   def from_token("User:" <> id) do
-    case Repo.get(User, id) do
-      nil  ->
-        changeset = User.changeset(%User{}, %{id: id})
-        Repo.insert(changeset)
+    case Accounts.get_user!(id) do
+      nil  -> Accounts.create_user(%{id: id})
       user -> {:ok, user}
     end
   end

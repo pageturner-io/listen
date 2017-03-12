@@ -10,10 +10,10 @@ config :listen,
   ecto_repos: [Listen.Repo]
 
 # Configures the endpoint
-config :listen, Listen.Endpoint,
+config :listen, Listen.Web.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "yhA6pUpGc/swyvjq384YBwfy65b7xg3ZDDpz6r8kyKy/UVIiNuX+eTs6ogtOTCQ7",
-  render_errors: [view: Listen.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: Listen.Web.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Listen.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
