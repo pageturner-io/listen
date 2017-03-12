@@ -60,10 +60,14 @@ defmodule Listen.ReadingListControllerTest do
     test "creates article and redirects when data is valid", %{conn: conn, user: user} do
       conn = post conn, reading_list_path(conn, :create), article: @valid_attrs
 
-      articles = ReadingList.list_articles(user)
+      assert %{id: id} = redirected_params(conn)
+      assert redirected_to(conn) == reading_list_path(conn, :show, id)
 
-      assert redirected_to(conn) == reading_list_path(conn, :index)
-      assert Enum.find(articles, fn (article) -> article.url == @valid_attrs.url end)
+      users = ReadingList.get_article!(id, user)
+      |> Repo.preload(:users)
+      |> Map.get(:users)
+
+      assert Enum.member?(users, user)
     end
 
     test "does not create a new article if one with the same url already exists", %{conn: conn, other_user: other_user} do

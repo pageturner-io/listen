@@ -16,10 +16,10 @@ defmodule Listen.Web.ReadingListController do
 
   def create(conn, %{"article" => article_params}, current_user, _claims) do
     case ReadingList.create_article(article_params, current_user) do
-      {:ok, _article} ->
+      {:ok, article} ->
         conn
         |> put_flash(:info, "Article created successfully.")
-        |> redirect(to: reading_list_path(conn, :index))
+        |> redirect(to: reading_list_path(conn, :show, article))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
