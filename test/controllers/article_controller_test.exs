@@ -3,9 +3,16 @@ defmodule Listen.ArticleControllerTest do
 
   import Listen.Factory
 
-  alias Listen.Article
+  alias Listen.ReadingList
+  alias Listen.ReadingList.Article
+
   @valid_attrs %{url: "https://example.com"}
   @invalid_attrs %{}
+
+  def fixture(:article, user, attrs \\ @valid_attrs) do
+    {:ok, article} = ReadingList.create_article(attrs, user)
+    article
+  end
 
   describe "without a logged in user" do
 
@@ -33,11 +40,10 @@ defmodule Listen.ArticleControllerTest do
     end
 
     test "lists all articles submitted by user on index", %{conn: conn, user: user, other_user: other_user} do
-      article = Repo.insert!(%Article{url: "https://example.com"})
-      other_article = Repo.insert!(%Article{url: "https://foobar.com"})
+      article = fixture(:article, user)
+      fixture(:article, other_user)
 
-      Repo.preload(user, :articles) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:articles, [article]) |> Repo.update!
-      Repo.preload(other_user, :articles) |> Ecto.Changeset.change() |> Ecto.Changeset.put_assoc(:articles, [other_article]) |> Repo.update!
+      other_article = fixture(:article, other_user, %{url: "https://foo.bar"})
 
       conn = get conn, article_path(conn, :index)
 
@@ -54,17 +60,14 @@ defmodule Listen.ArticleControllerTest do
     test "creates article and redirects when data is valid", %{conn: conn, user: user} do
       conn = post conn, article_path(conn, :create), article: @valid_attrs
 
-      article = Repo.get_by(Article, @valid_attrs)
-      user_article = Repo.preload(user, :articles).articles
-      |> Enum.find(fn(a) -> a.url == @valid_attrs.url end)
+      articles = ReadingList.list_articles(user)
 
       assert redirected_to(conn) == article_path(conn, :index)
-      assert article
-      assert user_article == article
+      assert Enum.find(articles, fn (article) -> article.url == @valid_attrs.url end)
     end
 
-    test "does not create a new article if one with the same url already exists", %{conn: conn} do
-      Repo.insert!(%Article{url: @valid_attrs.url})
+    test "does not create a new article if one with the same url already exists", %{conn: conn, other_user: other_user} do
+      fixture(:article, other_user)
       previous_count = Repo.aggregate(Article, :count, :id)
 
       post conn, article_path(conn, :create), article: @valid_attrs
@@ -79,8 +82,8 @@ defmodule Listen.ArticleControllerTest do
       assert html_response(conn, 200) =~ "can&#39;t be blank"
     end
 
-    test "shows chosen article", %{conn: conn} do
-      article = Repo.insert! %Article{}
+    test "shows chosen article", %{conn: conn, user: user} do
+      article = fixture(:article, user)
       conn = get conn, article_path(conn, :show, article)
 
       assert html_response(conn, 200) =~ "Show article"
@@ -93,20 +96,15 @@ defmodule Listen.ArticleControllerTest do
     end
 
     test "deletes the association between user and article, but not the article itself", %{conn: conn, user: user} do
-      article = Article.changeset(%Article{url: "https://example.com"})
-      |> Ecto.Changeset.put_assoc(:users, [user])
-      |> Repo.insert!
+      article = fixture(:article, user)
 
       conn = delete conn, article_path(conn, :delete, article)
       assert redirected_to(conn) == article_path(conn, :index)
 
-      assert Repo.get(Article, article.id)
+      updated_article = ReadingList.get_article!(article.id, user) |> Repo.preload(:users)
 
-      article_users = Repo.get(Article, article.id)
-      |> Repo.preload(:users)
-      |> Map.get(:users)
-
-      refute Enum.member?(article_users, user)
+      assert updated_article
+      refute Enum.member?(updated_article.users, user)
     end
 
   end
