@@ -1,4 +1,4 @@
-defmodule Listen.Web.ArticleController do
+defmodule Listen.Web.ReadingListController do
   use Listen.Web, :controller
   use Guardian.Phoenix.Controller
 
@@ -19,7 +19,7 @@ defmodule Listen.Web.ArticleController do
       {:ok, _article} ->
         conn
         |> put_flash(:info, "Article created successfully.")
-        |> redirect(to: article_path(conn, :index))
+        |> redirect(to: reading_list_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -36,6 +36,6 @@ defmodule Listen.Web.ArticleController do
 
     conn
     |> put_flash(:info, "Article deleted successfully.")
-    |> redirect(to: article_path(conn, :index))
+    |> redirect(to: reading_list_path(conn, :index))
   end
 end

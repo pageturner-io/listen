@@ -1,4 +1,4 @@
-defmodule Listen.ArticleControllerTest do
+defmodule Listen.ReadingListControllerTest do
   use Listen.Web.ConnCase
 
   import Listen.Factory
@@ -16,8 +16,8 @@ defmodule Listen.ArticleControllerTest do
 
   describe "without a logged in user" do
 
-    test "/articles redirects to root with a flash error", %{conn: conn} do
-      conn = get(conn, "/articles")
+    test "index redirects to root with a flash error", %{conn: conn} do
+      conn = get conn, reading_list_path(conn, :index)
 
       assert redirected_to(conn) =~ page_path(conn, :index)
       assert get_flash(conn, :error) == "You must be signed in to access this page."
@@ -45,24 +45,24 @@ defmodule Listen.ArticleControllerTest do
 
       other_article = fixture(:article, other_user, %{url: "https://foo.bar"})
 
-      conn = get conn, article_path(conn, :index)
+      conn = get conn, reading_list_path(conn, :index)
 
       assert html_response(conn, 200) =~ article.url
       refute html_response(conn, 200) =~ other_article.url
     end
 
     test "renders form for new articles", %{conn: conn} do
-      conn = get conn, article_path(conn, :new)
+      conn = get conn, reading_list_path(conn, :new)
 
       assert html_response(conn, 200) =~ "New article"
     end
 
     test "creates article and redirects when data is valid", %{conn: conn, user: user} do
-      conn = post conn, article_path(conn, :create), article: @valid_attrs
+      conn = post conn, reading_list_path(conn, :create), article: @valid_attrs
 
       articles = ReadingList.list_articles(user)
 
-      assert redirected_to(conn) == article_path(conn, :index)
+      assert redirected_to(conn) == reading_list_path(conn, :index)
       assert Enum.find(articles, fn (article) -> article.url == @valid_attrs.url end)
     end
 
@@ -70,13 +70,13 @@ defmodule Listen.ArticleControllerTest do
       fixture(:article, other_user)
       previous_count = Repo.aggregate(Article, :count, :id)
 
-      post conn, article_path(conn, :create), article: @valid_attrs
+      post conn, reading_list_path(conn, :create), article: @valid_attrs
 
       assert Repo.aggregate(Article, :count, :id) == previous_count
     end
 
     test "does not create article and renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, article_path(conn, :create), article: @invalid_attrs
+      conn = post conn, reading_list_path(conn, :create), article: @invalid_attrs
 
       assert html_response(conn, 200) =~ "New article"
       assert html_response(conn, 200) =~ "can&#39;t be blank"
@@ -84,22 +84,22 @@ defmodule Listen.ArticleControllerTest do
 
     test "shows chosen article", %{conn: conn, user: user} do
       article = fixture(:article, user)
-      conn = get conn, article_path(conn, :show, article)
+      conn = get conn, reading_list_path(conn, :show, article)
 
       assert html_response(conn, 200) =~ "Show article"
     end
 
     test "renders page not found when id is nonexistent", %{conn: conn} do
       assert_error_sent 404, fn ->
-        get conn, article_path(conn, :show, "0e31998f-503f-4218-a801-c8bb7ff9498b")
+        get conn, reading_list_path(conn, :show, "0e31998f-503f-4218-a801-c8bb7ff9498b")
       end
     end
 
     test "deletes the association between user and article, but not the article itself", %{conn: conn, user: user} do
       article = fixture(:article, user)
 
-      conn = delete conn, article_path(conn, :delete, article)
-      assert redirected_to(conn) == article_path(conn, :index)
+      conn = delete conn, reading_list_path(conn, :delete, article)
+      assert redirected_to(conn) == reading_list_path(conn, :index)
 
       updated_article = ReadingList.get_article!(article.id, user) |> Repo.preload(:users)
 

@@ -1,0 +1,13 @@
+<h2>Show article</h2>
+
+<ul>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @article.url %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: reading_list_path(@conn, :edit, @article) %>
+<%= link "Back", to: reading_list_path(@conn, :index) %>

@@ -25,10 +25,10 @@ defmodule Listen.Web.Router do
     get "/", PageController, :index
   end
 
-  scope "/articles", Listen.Web do
+  scope "/read", Listen.Web do
     pipe_through [:browser, :browser_auth]
 
-    resources "/", ArticleController
+    resources "/", ReadingListController
   end
 
   # Other scopes may use custom stacks.
