@@ -12,14 +12,22 @@
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+    <div class="app">
+      <header class="grid">
+        <nav role="navigation" class="grid nav nav--main">
+          <ul class="grid__col-sm-12 grid--wrap grid--direction-row grid--align-center">
+            <li class="nav__item">
+              <a class="nav__item__link nav__item__link--logo" href="<%= page_path(@conn, :index) %>">
+                <%= gettext "Listen" %>
+              </a>
+            </li>
+            <li class="nav__item">
+              <a class="nav__item__link" href="<%= reading_list_path(@conn, :index) %>">
+                <%= gettext "Read" %>
+              </a>
+            </li>
           </ul>
         </nav>
-        <span class="logo"></span>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
@@ -29,7 +37,7 @@
         <%= render @view_module, @view_template, assigns %>
       </main>
 
-    </div> <!-- /container -->
+    </div> <!-- /app -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

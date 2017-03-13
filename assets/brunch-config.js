@@ -51,7 +51,17 @@ exports.config = {
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/vendor/]
-    }
+    },
+
+    sass: {
+      options: {
+        includePaths: [
+          "node_modules/pageturner-styleguide/src/sass/exports",
+          "node_modules"
+        ], // tell sass-brunch where to look for files to @import
+        precision: 8 // minimum precision required by bootstrap-sass
+      }
+    },
   },
 
   modules: {
