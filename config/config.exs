@@ -29,6 +29,10 @@ config :hivent,
   partition_count: 4,
   client_id: "listen"
 
+# Configure Identity
+config :listen,
+  identity_base_path: System.get_env("IDENTITY_BASE_PATH")
+
 # Configure your database
 config :listen, Listen.Repo,
   adapter: Ecto.Adapters.Postgres,
