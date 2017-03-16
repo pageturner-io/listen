@@ -8,7 +8,7 @@
 
     <%= if Guardian.Plug.current_resource(@conn) do %>
     <li class="nav__item">
-      <%= link gettext("Read"), to: reading_list_path(@conn, :index), class: "nav__item__link" %>
+      <%= link gettext("My List"), to: reading_list_path(@conn, :index), class: "nav__item__link" %>
     </li>
     <% end %>
 
