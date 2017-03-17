@@ -2,6 +2,7 @@ defmodule Listen.ReadingListControllerTest do
   use Listen.Web.ConnCase
 
   import Listen.Factory
+  import Listen.Web.Gettext
 
   alias Listen.ReadingList
   alias Listen.ReadingList.Article
@@ -54,7 +55,7 @@ defmodule Listen.ReadingListControllerTest do
     test "renders form for new articles", %{conn: conn} do
       conn = get conn, reading_list_path(conn, :new)
 
-      assert html_response(conn, 200) =~ "New article"
+      assert html_response(conn, 200) =~ gettext("Save new article")
     end
 
     test "creates article and redirects when data is valid", %{conn: conn, user: user} do
@@ -82,7 +83,7 @@ defmodule Listen.ReadingListControllerTest do
     test "does not create article and renders errors when data is invalid", %{conn: conn} do
       conn = post conn, reading_list_path(conn, :create), article: @invalid_attrs
 
-      assert html_response(conn, 200) =~ "New article"
+      assert html_response(conn, 200) =~ gettext("Save new article")
       assert html_response(conn, 200) =~ "can&#39;t be blank"
     end
 

@@ -1,0 +1,28 @@
+<nav role="navigation" class="grid nav nav--main">
+  <ul class="container--fixed grid__col-xs-12 grid--wrap grid--direction-row grid--align-center">
+    <li class="nav__item">
+      <a class="nav__item__link nav__item__link--logo" href="<%= page_path(@conn, :index) %>">
+        <%= gettext "Listen" %>
+      </a>
+    </li>
+
+    <%= if Guardian.Plug.current_resource(@conn) do %>
+    <li class="nav__item">
+      <%= link gettext("My List"), to: reading_list_path(@conn, :index), class: "nav__item__link" %>
+    </li>
+    <li class="nav__item">
+      <%= link gettext("Save new article"), to: reading_list_path(@conn, :new), class: "nav__item__btn nav__item__btn--primary" %>
+    </li>
+    <% end %>
+
+    <%= unless Guardian.Plug.current_resource(@conn) do %>
+    <li class="nav__item">
+      <%= link gettext("Log in"), to: identity_path(@conn, :login), class: "nav__item__link" %>
+    </li>
+
+    <li class="nav__item">
+      <%= link gettext("Sign up"), to: identity_path(@conn, :register), class: "nav__item__btn nav__item__btn--primary" %>
+    </li>
+    <% end %>
+  </ul>
+</nav>

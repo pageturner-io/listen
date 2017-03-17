@@ -12,6 +12,9 @@ defmodule Listen.Web.Router do
   pipeline :browser_auth do
     plug Listen.Auth.Plug.VerifyCookie
     plug Guardian.Plug.LoadResource
+  end
+
+  pipeline :ensure_authentication do
     plug Guardian.Plug.EnsureAuthenticated, handler: Listen.Web.ErrorController
   end
 
@@ -20,13 +23,13 @@ defmodule Listen.Web.Router do
   end
 
   scope "/", Listen.Web do
-    pipe_through [:browser]
+    pipe_through [:browser, :browser_auth]
 
     get "/", PageController, :index
   end
 
   scope "/read", Listen.Web do
-    pipe_through [:browser, :browser_auth]
+    pipe_through [:browser, :browser_auth, :ensure_authentication]
 
     resources "/", ReadingListController
   end

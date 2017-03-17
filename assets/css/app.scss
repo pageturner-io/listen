@@ -1,0 +1,11 @@
+@import "pageturner";
+@import "./pages/reading_list";
+
+.nav__item__link.nav__item__link--logo {
+  @extend %text-hide;
+  background: url("/images/logo.svg") no-repeat top left;
+  background-size: 156px 40px;
+  width: 156px;
+  height: 40px;
+  display: block;
+}
