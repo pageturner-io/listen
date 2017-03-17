@@ -1,5 +1,5 @@
 <nav role="navigation" class="grid nav nav--main">
-  <ul class="grid__col-sm-12 grid--wrap grid--direction-row grid--align-center">
+  <ul class="container--fixed grid__col-xs-12 grid--wrap grid--direction-row grid--align-center">
     <li class="nav__item">
       <a class="nav__item__link nav__item__link--logo" href="<%= page_path(@conn, :index) %>">
         <%= gettext "Listen" %>
@@ -9,6 +9,9 @@
     <%= if Guardian.Plug.current_resource(@conn) do %>
     <li class="nav__item">
       <%= link gettext("My List"), to: reading_list_path(@conn, :index), class: "nav__item__link" %>
+    </li>
+    <li class="nav__item">
+      <%= link gettext("Save new article"), to: reading_list_path(@conn, :new), class: "nav__item__btn nav__item__btn--primary" %>
     </li>
     <% end %>
 

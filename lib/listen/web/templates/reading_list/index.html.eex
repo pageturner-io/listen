@@ -1,25 +1,7 @@
-<h2>Listing articles</h2>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Url</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
+<div class="page page--reading-list">
 <%= for article <- @articles do %>
-    <tr>
-      <td><%= article.url %></td>
-
-      <td class="text-right">
-        <%= link "Show", to: reading_list_path(@conn, :show, article), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: reading_list_path(@conn, :delete, article), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
+  <article>
+    <%= link article.url, to: article.url, target: "_blank" %>
+  </article>
 <% end %>
-  </tbody>
-</table>
-
-<%= link "New article", to: reading_list_path(@conn, :new) %>
+</div>

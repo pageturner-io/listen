@@ -1,0 +1,7 @@
+.page__reading_list {
+  @at-root #{&}--new {
+    .form__control {
+      font-size: 2em;
+    }
+  }
+}
