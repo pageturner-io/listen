@@ -4,7 +4,7 @@ defmodule Listen.Hivent.Consumers.UserSignedIn do
   use GenStage
 
   def start_link do
-    {:ok, producer} = Hivent.Consumer.Stages.Producer.start_link("listen", ["user:signed_in"])
+    {:ok, producer} = Hivent.Consumer.Stages.Producer.start_link("listen", ["identity:user:signed_in"])
     GenStage.start_link(__MODULE__, producer)
   end
 
