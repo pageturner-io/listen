@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   web:
-    image: pageturner/listen
+    image: pageturner/listen:latest
     networks:
       - proxy
       - hivent_front
@@ -15,7 +15,7 @@ services:
       DATABASE_URL: postgres://postgres@listen_db/listen
       POOL_SIZE: 20
       HIVENT_URL: redis://hivent_redis:6379
-      IDENTITY_BASE_PATH: identity.pageturner.io
+      IDENTITY_BASE_PATH: https://identity.pageturner.io
       GUARDIAN_SECRET_KEY_FILE: /run/secrets/guardian_secret_key
       SECRET_KEY_BASE_FILE: /run/secrets/secret_key_base
     deploy:
