@@ -1,0 +1,72 @@
+version: "3.1"
+
+services:
+  web:
+    image: pageturner/listen
+    networks:
+      - proxy
+      - hivent_front
+      - front
+      - back
+    secrets:
+      - guardian_secret_key
+      - secret_key_base
+    environment:
+      DATABASE_URL: postgres://postgres@listen_db/listen
+      POOL_SIZE: 20
+      HIVENT_URL: redis://hivent_redis:6379
+      IDENTITY_BASE_PATH: identity.pageturner.io
+      GUARDIAN_SECRET_KEY_FILE: /run/secrets/guardian_secret_key
+      SECRET_KEY_BASE_FILE: /run/secrets/secret_key_base
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+      update_config:
+        parallelism: 1
+        delay: 5s
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.serviceDomain=listen.pageturner.io,www.listen.pageturner.io
+        - com.df.servicePath=/
+        - com.df.port=8888
+        - com.df.httpsOnly=true
+        - com.df.xForwardedProto=true
+
+  migrator:
+    image: pageturner/listen
+    command: mix ecto.setup
+    networks:
+      - back
+    environment:
+      DATABASE_URL: postgres://postgres@listen_db/listen
+      POOL_SIZE: 1
+      HIVENT_URL: redis://hivent_redis:6379
+    deploy:
+      restart_policy:
+        condition: none
+
+  db:
+    image: postgres:9.6
+    volumes:
+      - "/mnt/data/listen/postgresql:/var/lib/postgresql/data"
+    networks:
+      - back
+    deploy:
+      restart_policy:
+        condition: any
+
+networks:
+  front:
+  back:
+  hivent_front:
+    external: true
+  proxy:
+    external: true
+
+secrets:
+  guardian_secret_key:
+    file: ./deploy/secrets/guardian_secret_key
+  secret_key_base:
+    file: ./deploy/secrets/secret_key_base

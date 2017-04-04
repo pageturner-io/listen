@@ -14,11 +14,11 @@ use Mix.Config
 config :listen, Listen.Web.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [host: {:system, "HOST"}, port: {:system, "PORT"}],
-  cache_static_manifest: "priv/static/manifest.json",
+  cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
   root: ".",
   version: Mix.Project.config[:version],
-  secret_key_base: {:system, "SECRET_KEY_BASE"}
+  secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 config :listen, Listen.Repo,
   adapter: Ecto.Adapters.Postgres,
@@ -58,7 +58,7 @@ config :logger, level: :info
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start the server for all endpoints:
 #
-#     config :phoenix, :serve_endpoints, true
+    config :phoenix, :serve_endpoints, true
 #
 # Alternatively, you can configure exactly which server to
 # start per endpoint:
@@ -68,7 +68,7 @@ config :logger, level: :info
 
 # Configure Guardian
 config :guardian, Guardian,
-  secret_key: {:system, "GUARDIAN_SECRET_KEY"}
+  secret_key: System.get_env("GUARDIAN_SECRET_KEY")
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
