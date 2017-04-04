@@ -30,4 +30,7 @@ RUN cd assets && npm run deploy
 RUN mix compile
 RUN mix phx.digest
 
-CMD ["mix", "phx.server"]
+COPY docker/entrypoint.sh /usr/local/bin
+
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["mix", "phoenix.server"]
