@@ -25,13 +25,13 @@ config :logger, :console,
 # Configure Hivent
 config :hivent,
   backend: :redis,
-  endpoint: System.get_env("HIVENT_URL"),
+  endpoint: {:system, "HIVENT_URL"},
   partition_count: 4,
   client_id: "listen"
 
 # Configure Identity
 config :listen,
-  identity_base_path: System.get_env("IDENTITY_BASE_PATH")
+  identity_base_path: {:system, "IDENTITY_BASE_PATH"}
 
 # Configure your database
 config :listen, Listen.Repo,
@@ -47,7 +47,7 @@ config :guardian, Guardian,
   ttl: { 30, :days },
   verify_issuer: true,
   secret_key: "tMNnxbTs4Ave+n3D9vEO92kBZSpQq/D/njTbeElV+bRdTSMhfnqdOLfTqHKvbkZ1",
-  serializer: Listen.Auth.GuardianSerializer
+  serializer: Listen.Auth.Guardian.Serializer
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

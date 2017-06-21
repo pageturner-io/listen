@@ -1,4 +1,4 @@
-defmodule Listen.Auth.GuardianSerializer do
+defmodule Listen.Auth.Guardian.Serializer do
   @moduledoc """
   The Token serializer used by Guardian to encode and
   decode resources into and from JWTs.
