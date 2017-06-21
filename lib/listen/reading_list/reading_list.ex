@@ -6,6 +6,9 @@ defmodule Listen.ReadingList do
   import Ecto.{Query, Changeset}, warn: false
   alias Listen.Repo
   alias Listen.ReadingList.{Article, UserArticle}
+  alias Listen.Accounts.{User}
+
+  @hivent Application.get_env(:listen, :hivent)
 
   def list_articles(user) do
     Repo.preload(user, :articles).articles
@@ -18,6 +21,7 @@ defmodule Listen.ReadingList do
     %Article{}
     |> article_changeset(attrs)
     |> create_article_with_user(user)
+    |> publish_article_saved_event
   end
 
   def remove_article(article, user) do
@@ -56,5 +60,21 @@ defmodule Listen.ReadingList do
     end
   end
 
+  defp publish_article_saved_event({:error, _ = error}), do: {:error, error}
+  defp publish_article_saved_event({:ok, %Article{} = article}) do
+    [%User{} = user | _] = article.users
+
+    @hivent.emit("listen:article:saved", %{
+      user: %{
+        id: user.id,
+      },
+      article: %{
+        id: article.id,
+        url: article.url
+      }
+    }, %{version: 1, key: user.id |> :erlang.crc32})
+
+    {:ok, article}
+  end
 
 end

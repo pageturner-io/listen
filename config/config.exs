@@ -49,6 +49,9 @@ config :guardian, Guardian,
   secret_key: "tMNnxbTs4Ave+n3D9vEO92kBZSpQq/D/njTbeElV+bRdTSMhfnqdOLfTqHKvbkZ1",
   serializer: Listen.Auth.Guardian.Serializer
 
+# Configure Hivent
+config :listen, :hivent, Hivent
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
