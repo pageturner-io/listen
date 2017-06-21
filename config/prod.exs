@@ -68,7 +68,7 @@ config :logger, level: :info
 
 # Configure Guardian
 config :guardian, Guardian,
-  secret_key: System.get_env("GUARDIAN_SECRET_KEY")
+  secret_key: {Listen.Auth.Guardian.SecretKey, :fetch}
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
