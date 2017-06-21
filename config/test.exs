@@ -15,6 +15,9 @@ config :listen, Listen.Repo,
   url: {:system, "DATABASE_URL"},
   pool: Ecto.Adapters.SQL.Sandbox
 
+# Configure Hivent
+config :listen, :hivent, Hivent.Memory
+
 # Configure Guardian
 config :guardian, Guardian,
   secret_key: {Listen.Auth.Guardian.SecretKey, :fetch}

@@ -6,10 +6,14 @@ defmodule Listen.ReadingListTest do
   alias Listen.ReadingList
   alias Listen.ReadingList.Article
 
+  @hivent Application.get_env(:listen, :hivent)
+
   @create_attrs %{url: "https://example.com"}
   @invalid_attrs %{url: nil}
 
   setup do
+    @hivent.Emitter.Cache.clear
+
     user = insert(:user)
     other_user = insert(:user)
 
@@ -57,6 +61,17 @@ defmodule Listen.ReadingListTest do
       assert article.url == @create_attrs.url
       assert Enum.member?(article.users, user)
     end
+
+    test "create_article/2 with valid data publishes a Hivent event", %{user: user} do
+      {:ok, %Article{} = article} = ReadingList.create_article(@create_attrs, user)
+
+      event = @hivent.Emitter.Cache.last
+
+      assert event.meta.name == "listen:article:saved"
+      assert event.payload.user.id == user.id
+      assert event.payload.article.id == article.id
+      assert event.payload.article.url == article.url
+    end
   end
 
   describe "when the article already exists" do
@@ -68,10 +83,27 @@ defmodule Listen.ReadingListTest do
       assert article.id == new_article.id
       assert Enum.member?(new_article.users, user)
     end
+
+    test "create_article/2 with valid data publishes a Hivent event", %{user: user} do
+      {:ok, %Article{} = new_article} = ReadingList.create_article(@create_attrs, user)
+
+      event = @hivent.Emitter.Cache.last
+
+      assert event.meta.name == "listen:article:saved"
+      assert event.payload.user.id == user.id
+      assert event.payload.article.id == new_article.id
+      assert event.payload.article.url == new_article.url
+    end
   end
 
   test "create_article/2 with invalid data returns error changeset", %{user: user} do
     assert {:error, %Ecto.Changeset{}} = ReadingList.create_article(@invalid_attrs, user)
+  end
+
+  test "create_article/2 with invalid data does not publish a Hivent event", %{user: user} do
+    ReadingList.create_article(@invalid_attrs, user)
+
+    assert Enum.empty?(@hivent.Emitter.Cache.all)
   end
 
   test "remove_article/2 removes the association with the user but not the article", %{user: user} do
