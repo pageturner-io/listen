@@ -1,0 +1,68 @@
+.nav {
+  @at-root #{&}--main {
+    background: $brand-dark;
+
+    border-bottom: 1px solid lighten($brand-dark, 5);
+
+    height: 70px;
+  }
+
+  @at-root #{&}__item {
+    list-style-type: none;
+    margin: 0 10px;
+
+    &:first-of-type {
+      margin-right: auto;
+    }
+
+    @at-root #{&}__link {
+      @extend %font-regular;
+      font-size: 1em;
+
+      color: $ice-gray;
+
+      &:link,
+      &:hover,
+      &:active,
+      &:focus,
+      &:visited {
+        color: $ice-gray;
+        background: transparent;
+        text-decoration: none;
+      }
+
+      @at-root #{&}--logo {
+        @extend %text-hide;
+        background: url("/images/logo.svg") no-repeat top left;
+        background-size: 104px 36px;
+        width: 104px;
+        height: 36px;
+        display: block;
+
+        &:link,
+        &:hover,
+        &:active,
+        &:focus,
+        &:visited {
+          border: 0;
+          text-decoration: none;
+        }
+      }
+    }
+
+    @at-root #{&}__btn {
+      @at-root #{&}--primary {
+        @extend %btn--primary;
+      }
+    }
+  }
+}
+
+.nav__item__link.nav__item__link--logo {
+  @extend %text-hide;
+  background: url("/images/logo.svg") no-repeat top left;
+  background-size: 104px 36px;
+  width: 104px;
+  height: 36px;
+  display: block;
+}

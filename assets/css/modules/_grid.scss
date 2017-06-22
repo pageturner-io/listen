@@ -1,0 +1,8 @@
+@import 'reflex-grid/scss/reflex';
+
+%container--fixed,
+.container--fixed {
+  margin: 0 auto;
+  padding: 0 2%;
+  max-width: 1600px;
+}
