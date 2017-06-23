@@ -24,8 +24,8 @@ RUN mix local.rebar --force_ssl
 
 RUN mix deps.get
 
-RUN cd assets && npm install
-RUN cd assets && npm run deploy
+RUN cd apps/listen/assets && npm install
+RUN cd apps/listen/assets && npm run deploy
 
 RUN mix compile
 RUN mix phx.digest
@@ -33,4 +33,4 @@ RUN mix phx.digest
 COPY docker/entrypoint.sh /usr/local/bin
 
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["mix", "phoenix.server"]
+CMD ["mix", "phx.server"]
