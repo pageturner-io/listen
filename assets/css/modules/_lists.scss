@@ -1,5 +1,5 @@
 .list {
-  @at-root #{&}--horizontal {
+  @at-root #{&}--horizontal, %list-horizontal {
     list-style-type: none;
 
     .list__item {
