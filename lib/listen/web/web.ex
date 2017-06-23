@@ -43,6 +43,7 @@ defmodule Listen.Web do
       import Listen.Web.Router.Helpers
       import Listen.Web.ErrorHelpers
       import Listen.Web.Gettext
+      import Listen.Web.Helpers.Views.Identity
     end
   end
 

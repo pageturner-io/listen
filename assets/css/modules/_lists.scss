@@ -1,0 +1,9 @@
+.list {
+  @at-root #{&}--horizontal, %list-horizontal {
+    list-style-type: none;
+
+    .list__item {
+      display: inline;
+    }
+  }
+}

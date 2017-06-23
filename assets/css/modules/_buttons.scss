@@ -1,0 +1,101 @@
+%btn,
+.btn {
+  border-radius: 4px;
+  border: 1px solid $brand-light;
+
+  display: inline-block;
+
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+
+  padding: 8px 16px;
+
+  color: $brand-primary;
+
+  line-height: 1.42857;
+
+  transition: background-color .1s linear, color .1s linear;
+
+  &:link {
+    padding: 8px 16px;
+    color: $brand-primary;
+    text-decoration: none;
+  }
+
+  &:hover,
+  &:active {
+    color: $ice-gray;
+    background: $brand-primary;
+    text-decoration: none;
+  }
+}
+
+%btn--primary,
+.btn--primary {
+  @extend %btn;
+  @extend %font-bold;
+
+  color: $ice-gray;
+  background: $brand-primary;
+  border-color: $brand-primary;
+
+  &:link,
+  &:focus,
+  &:visited  {
+    color: $ice-gray;
+    background: $brand-primary;
+  }
+
+  &:hover {
+    color: lighten($brand-light, 10);
+  }
+}
+
+%btn--primary--ghost,
+.btn--primary--ghost {
+  @extend %btn;
+  @extend %font-bold;
+
+  color: $brand-light;
+  background: transparentize($brand-light, 0.85);
+
+  &:link,
+  &:focus,
+  &:visited  {
+    color: $brand-light;
+    background: transparentize($brand-light, 0.85);
+  }
+
+  &:hover {
+    color: $brand-light;
+    background: transparentize($brand-light, 0.65);
+  }
+}
+
+%btn--secondary,
+.btn--secondary {
+  @extend %btn;
+  @extend %font-regular;
+
+  border-color: $brand-primary;
+
+  color: lighten($brand-primary, 10);
+  background: transparentize($brand-primary, 0.85);
+
+  &:link,
+  &:focus,
+  &:visited  {
+    color: $brand-light;
+    background: transparentize($brand-light, 0.85);
+  }
+
+  &:hover {
+    color: $brand-light;
+    background: transparentize($brand-light, 0.65);
+  }
+}

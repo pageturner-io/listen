@@ -1,0 +1,26 @@
+.footer {
+  .list__item {
+    list-style-type: none;
+  }
+
+  .list__item a {
+    font-weight: bold;
+    color: $space-gray-light;
+  }
+}
+
+@media (min-width: 480px) {
+  .footer {
+    .list {
+      text-align: right;
+    }
+
+    .list__item {
+      display: inline;
+
+      a {
+        margin: 0 0.5em;
+      }
+    }
+  }
+}

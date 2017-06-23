@@ -1,0 +1,9 @@
+%text-hide,
+.text-hide {
+  // sass-lint:disable space-around-operator
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}

@@ -1,0 +1,100 @@
+%font-regular,
+.font-regular {
+  font-family: $font-family-sans-serif;
+  font-weight: 400;
+}
+
+%font-italic,
+.font-italic {
+  font-family: $font-family-sans-serif;
+  font-style: italic;
+}
+
+%font-bold,
+.font-bold {
+  font-family: $font-family-sans-serif;
+  font-weight: 700;
+}
+
+%font-light,
+.font-light {
+  font-family: $font-family-sans-serif;
+  font-weight: 300;
+}
+
+body {
+  @extend %font-regular;
+  color: $space-gray;
+}
+
+em {
+  @extend %font-regular;
+  @extend %font-italic;
+}
+
+strong {
+  @extend %font-bold;
+}
+
+p {
+  @extend %font-regular;
+  font-size: 1em;
+}
+
+small {
+  font-size: .8em;
+}
+
+h1 {
+  font-size: 6em;
+  line-height: 1em;
+  margin: .5em 0;
+}
+
+h2 {
+  font-size: 3em;
+  line-height: 1em;
+  margin: .5em 0;
+}
+
+h3 {
+  font-size: 2.4em;
+  line-height: 1em;
+  margin: .5em 0;
+}
+
+h4 {
+  font-size: 1.6em;
+  line-height: 1em;
+  margin: .5em 0;
+}
+
+h5 {
+  font-size: 1.25em;
+  line-height: 1em;
+  margin: .5em 0;
+}
+
+h6 {
+  font-size: 1em;
+  line-height: 1em;
+  margin: .5em 0;
+}
+
+a {
+  color: $brand-primary;
+  text-decoration: none;
+  padding: .1em;
+
+  :visited {
+    color: $brand-dark;
+  }
+
+  :hover {
+    text-decoration: underline;
+
+    &:visited {
+      background: $brand-dark;
+    }
+  }
+}

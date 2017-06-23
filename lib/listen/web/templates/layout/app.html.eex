@@ -17,7 +17,7 @@
         <%= render "_navbar.html", conn: @conn %>
       </header>
 
-      <div class="container--fixed">
+      <div>
 
         <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
         <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
@@ -27,6 +27,9 @@
         </main>
 
       </div>
+
+
+      <%= render "_footer.html" %>
 
     </div> <!-- /app -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

@@ -1,0 +1,13 @@
+.form {
+  @at-root #{&}__control {
+    margin: 15px 0;
+    padding: .3em;
+
+    border: 1px solid darken($ice-gray, 15);
+    border-radius: 3px;
+
+    width: 100%;
+
+    color: $space-gray;
+  }
+}
