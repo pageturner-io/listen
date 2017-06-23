@@ -1,3 +1,5 @@
+@import '../base/colors';
+
 .page__index {
   #hero-waveform {
     width: 100%;
@@ -5,6 +7,39 @@
 
     canvas {
       width: 100%;
+    }
+  }
+
+  .howitworks__step__title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 0;
+  }
+
+  .howitworks__step__subtitle {
+    text-transform: uppercase;
+    color: $brand-primary;
+    font-size: 1em;
+    font-weight: bold;
+  }
+
+  .howitworks__step {
+    padding-bottom: 30px;
+
+    @at-root #{&}--even {
+      background: $brand-primary;
+
+      .howitworks__step__title {
+        color: $ice-gray;
+      }
+
+      .howitworks__step__subtitle {
+        color: lighten($brand-primary, 20);
+      }
+
+      .howitworks__step__paragraph {
+        color: $ice-gray;
+      }
     }
   }
 }
@@ -20,6 +55,14 @@
   .page__index {
     #hero-waveform {
       height: 100px;
+    }
+  }
+}
+
+@media (min-width: 767px) {
+  .page__index {
+    .howitworks__step--even {
+      text-align: right;
     }
   }
 }

@@ -1,4 +1,4 @@
-<section class="grid hero hero-index">
+<section class="grid hero hero--index">
   <div class="grid__col-xs-3"></div>
   <div class="grid__col-xs-6 grid--justify-center grid--align-center">
     <div id="hero-waveform"></div>

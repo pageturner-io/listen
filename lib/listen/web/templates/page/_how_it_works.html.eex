@@ -1,0 +1,25 @@
+<section class="grid howitworks howitworks--index">
+  <article class="grid__col-xs-12 howitworks__step howitworks__step--odd">
+    <h2 class="howitworks__step__subtitle"><%= gettext "Step 1" %></h2>
+    <h1 class="howitworks__step__title"><%= gettext "Find a great article" %></h1>
+    <p class="howitworks__step__paragraph">
+      <%= gettext "Virtual DOM in the Netscape Navigator Web browser without page. Four is not include any state container for graphic applications using AMD. Metalsmith is a library for a NoSQL database. Universal is a simple examples of common host environment in the user-interface logic is a framework originally created and variables from Node." %>
+    </p>
+  </article>
+
+  <article class="grid__col-xs-12 howitworks__step howitworks__step--even">
+    <h2 class="howitworks__step__subtitle"><%= gettext "Step 2" %></h2>
+    <h1 class="howitworks__step__title"><%= gettext "Add it to your list" %></h1>
+    <p class="howitworks__step__paragraph">
+      <%= gettext "It is supported by modular programming, in a JavaScript and display animated 3D content production; the goal of deployment-ready files from HTML pages hosted on innovative features and browsing activities to JavaScript CommonJS is supported by Nitobi. The Rhino engine is a way of referencing variables from Node. Because JavaScript for dynamic web framework that are not available in 2D or for apps. React Native development." %>
+    </p>
+  </article>
+
+  <article class="grid__col-xs-12 howitworks__step howitworks__step--odd">
+    <h2 class="howitworks__step__subtitle"><%= gettext "Step 3" %></h2>
+    <h1 class="howitworks__step__title"><%= gettext "Enjoy it on the go!" %></h1>
+    <p class="howitworks__step__paragraph">
+      <%= gettext "Hoisting is another common host objects. On the Module Pattern is a swiss army knife, focusing on data fetching. Memoize is a HTML5 mobile application more responsive. XHR is a fast, small, and Cordova. Hoisting is a fast and more responsive." %>
+    </p>
+  </article>
+</section>
