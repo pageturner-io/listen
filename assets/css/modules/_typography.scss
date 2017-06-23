@@ -82,11 +82,9 @@ h6 {
 }
 
 a {
-  :link {
-    color: $brand-primary;
-    text-decoration: none;
-    padding: .1em;
-  }
+  color: $brand-primary;
+  text-decoration: none;
+  padding: .1em;
 
   :visited {
     color: $brand-dark;

@@ -1,0 +1,17 @@
+<footer class="container--fixed footer">
+  <div class="grid">
+    <div class="grid__col-xs-2 grid__col--bleed-x footer__copyright">
+      <%= {:safe, gettext("&copy; %{year} Pageturner", year: DateTime.utc_now.year)} %>
+    </div>
+    <div class="grid__col-xs-10 grid__col--bleed-x footer__links">
+      <ul class="list list--horizontal">
+        <li class="list__item">
+          <a href="https://twitter.com/pageturnerio"><%= gettext "Twitter" %></a>
+        </li>
+        <li class="list__item">
+          <a href="https://facebook.com/pageturnerio"><%= gettext "Facebook" %></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>

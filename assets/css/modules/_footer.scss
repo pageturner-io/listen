@@ -1,0 +1,11 @@
+.footer {
+  .list {
+    text-align: right;
+  }
+
+  .list__item a {
+    font-weight: bold;
+    color: $space-gray-light;
+    margin: 0 0.5em;
+  }
+}

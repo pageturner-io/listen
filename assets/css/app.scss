@@ -5,6 +5,12 @@
 @import 'modules/buttons';
 @import 'modules/nav';
 @import 'modules/forms';
+@import 'modules/lists';
 @import 'modules/hero';
+@import 'modules/footer';
 @import "./pages/index";
 @import "./pages/reading_list";
+
+.page {
+  background: $ice-gray-light;
+}

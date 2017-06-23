@@ -24,7 +24,7 @@
   }
 
   .howitworks__step {
-    padding-bottom: 30px;
+    padding: 30px 2%;
 
     @at-root #{&}--even {
       background: $brand-primary;

@@ -1,5 +1,5 @@
-<section id="how-it-works" class="grid howitworks howitworks--index container--fixed page__section">
-  <article class="grid__col-xs-12 howitworks__step howitworks__step--odd">
+<section id="how-it-works" class="grid howitworks howitworks--index page__section">
+  <article class="grid__col-xs-12 howitworks__step howitworks__step--odd container--fixed">
     <h2 class="howitworks__step__subtitle"><%= gettext "Step 1" %></h2>
     <h1 class="howitworks__step__title"><%= gettext "Find a great article" %></h1>
     <p class="howitworks__step__paragraph">
@@ -7,7 +7,7 @@
     </p>
   </article>
 
-  <article class="grid__col-xs-12 howitworks__step howitworks__step--even">
+  <article class="grid__col-xs-12 howitworks__step howitworks__step--even container--fixed">
     <h2 class="howitworks__step__subtitle"><%= gettext "Step 2" %></h2>
     <h1 class="howitworks__step__title"><%= gettext "Add it to your list" %></h1>
     <p class="howitworks__step__paragraph">
@@ -15,7 +15,7 @@
     </p>
   </article>
 
-  <article class="grid__col-xs-12 howitworks__step howitworks__step--odd">
+  <article class="grid__col-xs-12 howitworks__step howitworks__step--odd container--fixed">
     <h2 class="howitworks__step__subtitle"><%= gettext "Step 3" %></h2>
     <h1 class="howitworks__step__title"><%= gettext "Enjoy it on the go!" %></h1>
     <p class="howitworks__step__paragraph">

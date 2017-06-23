@@ -28,6 +28,9 @@
 
       </div>
 
+
+      <%= render "_footer.html" %>
+
     </div> <!-- /app -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
