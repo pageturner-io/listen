@@ -1,0 +1,15 @@
+.hero {
+  background: $brand-dark;
+  color: $ice-gray;
+  border-bottom: 3px solid $brand-primary;
+}
+
+.hero__cta {
+  margin: 25px 0;
+}
+
+.title--hero {
+  @extend %font-bold;
+  font-size: 1.3em;
+  margin: 1em 0;
+}

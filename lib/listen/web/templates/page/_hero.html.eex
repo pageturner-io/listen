@@ -1,0 +1,26 @@
+<section class="grid hero hero-index">
+  <div class="grid__col-xs-3"></div>
+  <div class="grid__col-xs-6 grid--justify-center grid--align-center">
+    <div id="hero-waveform"></div>
+    <h1 class="title title--hero">
+      <%= {:safe, gettext "<em>Shhh…</em> Can you hear that? It’s the sound of the Web."} %>
+    </h1>
+    <p class="description description--hero">
+      <%= gettext "Listen lets you hear any article on the Web, so you can enjoy the great content you already read while on the go." %>
+    </p>
+
+    <div class="grid hero__cta grid--justify-center grid--align-center">
+      <div class="grid__col-xs-12 grid__col-sm-5">
+        <a class="btn btn--secondary">
+          <%= gettext "How it works" %>
+        </a>
+      </div>
+      <div class="grid__col-xs-12 grid__col-sm-5">
+        <a class="btn btn--primary">
+          <%= gettext "Register now" %>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="grid__col-xs-3"></div>
+</section>

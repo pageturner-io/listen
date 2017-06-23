@@ -31,6 +31,10 @@
         text-decoration: none;
       }
 
+      &:hover {
+        text-decoration: underline;
+      }
+
       @at-root #{&}--logo {
         @extend %text-hide;
         background: url("/images/logo.svg") no-repeat top left;
@@ -53,6 +57,10 @@
     @at-root #{&}__btn {
       @at-root #{&}--primary {
         @extend %btn--primary;
+      }
+
+      @at-root #{&}--primary--ghost {
+        @extend %btn--primary--ghost;
       }
     }
   }

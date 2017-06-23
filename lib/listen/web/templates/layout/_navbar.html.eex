@@ -21,7 +21,7 @@
     </li>
 
     <li class="nav__item">
-      <%= link gettext("Sign up"), to: identity_path(@conn, :register), class: "nav__item__btn nav__item__btn--primary" %>
+      <%= link gettext("Sign up"), to: identity_path(@conn, :register), class: "nav__item__btn nav__item__btn--primary--ghost" %>
     </li>
     <% end %>
   </ul>
