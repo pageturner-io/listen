@@ -11,14 +11,12 @@
 
     <div class="grid hero__cta grid--justify-center grid--align-center">
       <div class="grid__col-xs-12 grid__col-sm-5">
-        <a class="btn btn--secondary">
+        <a href="#how-it-works" class="btn btn--secondary">
           <%= gettext "How it works" %>
         </a>
       </div>
       <div class="grid__col-xs-12 grid__col-sm-5">
-        <a class="btn btn--primary">
-          <%= gettext "Register now" %>
-        </a>
+        <%= link gettext("Register now"), to: identity_path(@conn, :register), class: "btn btn--primary" %>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-<section class="grid howitworks howitworks--index">
+<section id="how-it-works" class="grid howitworks howitworks--index">
   <article class="grid__col-xs-12 howitworks__step howitworks__step--odd">
     <h2 class="howitworks__step__subtitle"><%= gettext "Step 1" %></h2>
     <h1 class="howitworks__step__title"><%= gettext "Find a great article" %></h1>

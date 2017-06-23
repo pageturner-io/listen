@@ -1,4 +1,4 @@
 <div class="grid page page__index">
-  <%= render "_hero.html" %>
+  <%= render "_hero.html", conn: @conn %>
   <%= render "_how_it_works.html" %>
 </div>
