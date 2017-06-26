@@ -8,7 +8,7 @@ defmodule ArticleScraper.Hivent.Consumers.ArticleSaved do
 
   use Hivent.Consumer
 
-  def process(%Event{} = event) do
+  def process(%Event{} = _event) do
     :ok
   end
 end

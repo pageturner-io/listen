@@ -26,8 +26,8 @@ defmodule ArticleScraper.Scraper.Article do
     :title,
     :text,
     :html,
-    images: [Image.__struct__],
+    images: [],
     source: Source.__struct__,
-    authors: [Author.__struct__]
+    authors: []
   ]
 end

@@ -21,7 +21,13 @@ use Mix.Config
 #     config :logger, level: :info
 #
 
+# Readability API
 config :article_scraper, :readability, Readability
+
+# Well-known domains
+config :article_scraper, :well_known_domains, %{
+  "medium.com" => "Medium"
+}
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment

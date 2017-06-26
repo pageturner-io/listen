@@ -1,10 +1,10 @@
 defmodule ArticleScraper.ReadabilityMock do
   @behaviour ArticleScraper.Readability
 
-  alias ArticleScraper.Readability.Result
+  alias Readability.Summary
 
   def summarize(_url) do
-    %Result{
+    %Summary{
       title: "Example title",
       article_text: "Example text",
       article_html: "<p>Example text</p>",
