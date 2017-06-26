@@ -1,35 +1,28 @@
 defmodule Listen.Hivent.Consumers.UserSignedIn do
   alias Listen.Accounts
 
-  use GenStage
+  @topic "identity:user:signed_in"
+  @name "listen_user_signed_in"
+  @partition_count 2
 
-  def start_link do
-    {:ok, producer} = Hivent.Consumer.Stages.Producer.start_link("listen", ["identity:user:signed_in"])
-    GenStage.start_link(__MODULE__, producer)
-  end
+  use Hivent.Consumer
 
-  def init(producer) do
-    {:consumer, %{}, subscribe_to: [{producer, min_demand: 1, max_demand: 10}]}
-  end
-
-  def handle_events(events, _from, state) do
-    for {event, _queue} <- events do
-      create_or_update(event.payload["user"])
+  def process(%Hivent.Event{} = event) do
+    case create_or_update(event.payload["user"]) do
+      {:ok, _user} -> :ok
+      {:error, _changeset} -> {:error, "Failed to create/update user"}
     end
-
-    # As a consumer we never emit events
-    {:noreply, [], state}
   end
 
-  defp create_or_update(user) do
+  defp create_or_update(changeset) do
     changes = %{
-      email: user["email"],
-      name: user["name"]
+      email: changeset["email"],
+      name: changeset["name"]
     }
 
-    case Accounts.get_user(user["id"]) do
+    case Accounts.get_user(changeset["id"]) do
       nil  ->
-        with {:ok, user} <- Accounts.create_user(%{id: user["id"]}) do
+        with {:ok, user} <- Accounts.create_user(%{id: changeset["id"]}) do
           user
         end
       user -> user
