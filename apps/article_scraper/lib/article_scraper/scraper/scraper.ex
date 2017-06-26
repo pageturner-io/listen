@@ -7,6 +7,7 @@ defmodule ArticleScraper.Scraper do
   alias ArticleScraper.Scraper.Article.{Author, Image, Source}
 
   @readability Application.get_env(:article_scraper, :readability)
+  @hivent Application.get_env(:listen, :hivent)
 
   def scrape(%Article{} = article) do
     summary = @readability.summarize(article.url)
@@ -19,6 +20,8 @@ defmodule ArticleScraper.Scraper do
       source: source_from_url(article.url),
       images: images_from_html(summary.article_html)
     }
+
+    @hivent.emit("scraper:article:scraped", %{article: augmented}, %{version: 1})
 
     {:ok, augmented}
   end

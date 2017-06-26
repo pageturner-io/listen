@@ -8,6 +8,7 @@ defmodule ArticleScraper.ScraperTest do
   @url "https://example.com/2017/06/20/why-examples-are-useful"
   @id "ae6e7fe5617507dee222acbe51fe063d"
   @readability ArticleScraper.ReadabilityMock
+  @hivent Application.get_env(:listen, :hivent)
 
   setup do
     article = %Article{id: @id, url: @url}
@@ -78,5 +79,22 @@ defmodule ArticleScraper.ScraperTest do
 
       assert Enum.member?(augmented_article.images, %Image{url: "https://example.com/img.jpg"})
     end
+  end
+
+  test "it publishes a \"scraper:article:scraped\" event with the augmented article", %{article: article} do
+    {:ok, augmented_article} = Scraper.scrape(article)
+
+    event = @hivent.Emitter.Cache.last
+
+    assert event
+    assert event.meta.name == "scraper:article:scraped"
+    assert event.payload.article.id == augmented_article.id
+    assert event.payload.article.url == augmented_article.url
+    assert event.payload.article.title == augmented_article.title
+    assert event.payload.article.text == augmented_article.text
+    assert event.payload.article.html == augmented_article.html
+    assert event.payload.article.authors == augmented_article.authors
+    assert event.payload.article.source == augmented_article.source
+    assert event.payload.article.images == augmented_article.images
   end
 end

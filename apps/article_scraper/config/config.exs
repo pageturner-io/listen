@@ -24,6 +24,15 @@ use Mix.Config
 # Readability API
 config :article_scraper, :readability, Readability
 
+# Configure Hivent
+# config :hivent,
+#   backend: :redis,
+#   endpoint: {:system, "HIVENT_URL"},
+#   partition_count: 4,
+#   client_id: "article_scraper"
+
+# config :article_scraper, :hivent, Hivent
+
 # Well-known domains
 config :article_scraper, :well_known_domains, %{
   "medium.com" => "Medium"
