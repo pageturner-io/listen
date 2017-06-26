@@ -1,7 +1,7 @@
 defmodule ArticleScraper.Hivent.Consumers.ArticleSavedTest do
   use ExUnit.Case
 
-  import TimeHelper
+  import ArticleScraper.TimeHelper
 
   @hivent Application.get_env(:listen, :hivent)
 

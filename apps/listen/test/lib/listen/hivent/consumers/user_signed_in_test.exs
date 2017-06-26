@@ -1,8 +1,8 @@
 defmodule Listen.Hivent.Consumers.UserSignedInTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
   import Listen.Factory
-  import TimeHelper
+  import Listen.TimeHelper
 
   alias Listen.Repo
   alias Listen.Accounts

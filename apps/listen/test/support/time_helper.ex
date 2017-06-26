@@ -1,4 +1,4 @@
-defmodule TimeHelper do
+defmodule Listen.TimeHelper do
 
   def wait_until(fun), do: wait_until(500, fun)
 
