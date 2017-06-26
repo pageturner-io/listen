@@ -3,6 +3,7 @@ defmodule ArticleScraper.ScraperTest do
 
   alias ArticleScraper.Scraper
   alias ArticleScraper.Scraper.Article
+  alias ArticleScraper.Scraper.Article.{Author, Image}
 
   @url "https://example.com/2017/06/20/why-examples-are-useful"
   @id "ae6e7fe5617507dee222acbe51fe063d"
@@ -36,7 +37,9 @@ defmodule ArticleScraper.ScraperTest do
   test "Augments an %Article{} with authors", %{article: article, expected: expected} do
     {:ok, augmented_article} = Scraper.scrape(article)
 
-    assert augmented_article.authors == expected.authors
+    authors = Enum.map(expected.authors, fn (author) -> %Author{name: author} end)
+
+    assert augmented_article.authors == authors
   end
 
   describe "with an unknown URL" do
@@ -73,7 +76,7 @@ defmodule ArticleScraper.ScraperTest do
     test "it augments an %Article with images", %{article: article} do
       {:ok, augmented_article} = Scraper.scrape(%{article | url: @url })
 
-      assert Enum.member?(augmented_article.images, "https://example.com/img.jpg")
+      assert Enum.member?(augmented_article.images, %Image{url: "https://example.com/img.jpg"})
     end
   end
 end

@@ -4,19 +4,20 @@ defmodule ArticleScraper.Scraper do
   them with information scraped from their source url.
   """
   alias ArticleScraper.Scraper.Article
+  alias ArticleScraper.Scraper.Article.{Author, Image, Source}
 
   @readability Application.get_env(:article_scraper, :readability)
 
   def scrape(%Article{} = article) do
-    result = @readability.summarize(article.url)
+    summary = @readability.summarize(article.url)
 
     augmented = %Article{article |
-      title: result.title,
-      text: result.article_text,
-      html: result.article_html,
-      authors: result.authors,
+      title: summary.title,
+      text: summary.article_text,
+      html: summary.article_html,
+      authors: authors_from_summary(summary),
       source: source_from_url(article.url),
-      images: images_from_html(result.article_html)
+      images: images_from_html(summary.article_html)
     }
 
     {:ok, augmented}
@@ -29,7 +30,7 @@ defmodule ArticleScraper.Scraper do
       name -> name
     end
 
-    %Article.Source{name: name}
+    %Source{name: name}
   end
 
   defp human_name_for_host(host) do
@@ -39,9 +40,12 @@ defmodule ArticleScraper.Scraper do
     end
   end
 
+  defp authors_from_summary(summary), do: Enum.map(summary.authors, fn (author) -> %Author{name: author} end)
+
   defp images_from_html(html) do
     Readability.article(html, [clean_conditionally: false])
     |> Floki.find("img")
     |> Floki.attribute("src")
+    |> Enum.map(fn (src) -> %Image{url: src} end)
   end
 end
