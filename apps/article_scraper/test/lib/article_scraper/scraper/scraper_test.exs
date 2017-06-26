@@ -1,5 +1,5 @@
 defmodule ArticleScraper.ScraperTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
 
   alias ArticleScraper.Scraper
   alias ArticleScraper.Scraper.Article
@@ -13,6 +13,10 @@ defmodule ArticleScraper.ScraperTest do
   setup do
     article = %Article{id: @id, url: @url}
     augmented_article = @readability.summarize(@url)
+
+    @hivent.Emitter.Cache.clear
+
+    on_exit fn -> @hivent.Emitter.Cache.clear end
 
     [article: article, expected: augmented_article]
   end
