@@ -15,7 +15,8 @@ defmodule ArticleScraper.Scraper do
       text: result.article_text,
       html: result.article_html,
       authors: result.authors,
-      source: source_from_url(article.url)
+      source: source_from_url(article.url),
+      images: images_from_html(result.article_html)
     }
 
     {:ok, augmented}
@@ -36,5 +37,11 @@ defmodule ArticleScraper.Scraper do
       {:ok, domains} -> domains[host]
       :error -> nil
     end
+  end
+
+  defp images_from_html(html) do
+    Readability.article(html, [clean_conditionally: false])
+    |> Floki.find("img")
+    |> Floki.attribute("src")
   end
 end

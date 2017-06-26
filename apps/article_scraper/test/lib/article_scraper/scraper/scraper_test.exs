@@ -58,4 +58,22 @@ defmodule ArticleScraper.ScraperTest do
       assert augmented_article.source.name == "Medium"
     end
   end
+
+  describe "when the source has no images" do
+    test "it does not augment an %Article with images", %{article: article} do
+      {:ok, augmented_article} = Scraper.scrape(article)
+
+      assert length(augmented_article.images) == 0
+    end
+  end
+
+  describe "when the source has images" do
+    @url ArticleScraper.ReadabilityMock.Helpers.url_with_images()
+
+    test "it augments an %Article with images", %{article: article} do
+      {:ok, augmented_article} = Scraper.scrape(%{article | url: @url })
+
+      assert Enum.member?(augmented_article.images, "https://example.com/img.jpg")
+    end
+  end
 end
