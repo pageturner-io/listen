@@ -12,7 +12,7 @@ defmodule Listen.ReadingListTest do
   @invalid_attrs %{url: nil}
 
   setup do
-    @hivent.Emitter.Cache.clear
+    @hivent.clear()
 
     user = insert(:user)
     other_user = insert(:user)
@@ -65,12 +65,10 @@ defmodule Listen.ReadingListTest do
     test "create_article/2 with valid data publishes a Hivent event", %{user: user} do
       {:ok, %Article{} = article} = ReadingList.create_article(@create_attrs, user)
 
-      event = @hivent.Emitter.Cache.last
-
-      assert event.meta.name == "listen:article:saved"
-      assert event.payload.user.id == user.id
-      assert event.payload.article.id == article.id
-      assert event.payload.article.url == article.url
+      assert @hivent.include?(
+        %{user: %{id: user.id}, article: %{id: article.id, url: article.url}},
+        %{name: "listen:article:saved"}
+      )
     end
   end
 
@@ -87,12 +85,10 @@ defmodule Listen.ReadingListTest do
     test "create_article/2 with valid data publishes a Hivent event", %{user: user} do
       {:ok, %Article{} = new_article} = ReadingList.create_article(@create_attrs, user)
 
-      event = @hivent.Emitter.Cache.last
-
-      assert event.meta.name == "listen:article:saved"
-      assert event.payload.user.id == user.id
-      assert event.payload.article.id == new_article.id
-      assert event.payload.article.url == new_article.url
+      assert @hivent.include?(
+        %{user: %{id: user.id}, article: %{id: new_article.id, url: new_article.url}},
+        %{name: "listen:article:saved"}
+      )
     end
   end
 

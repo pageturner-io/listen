@@ -14,9 +14,9 @@ defmodule ArticleScraper.ScraperTest do
     article = %Article{id: @id, url: @url}
     augmented_article = @readability.summarize(@url)
 
-    @hivent.Emitter.Cache.clear
+    @hivent.clear()
 
-    on_exit fn -> @hivent.Emitter.Cache.clear end
+    on_exit fn -> @hivent.clear() end
 
     [article: article, expected: augmented_article]
   end
@@ -88,17 +88,20 @@ defmodule ArticleScraper.ScraperTest do
   test "it publishes a \"scraper:article:scraped\" event with the augmented article", %{article: article} do
     {:ok, augmented_article} = Scraper.scrape(article)
 
-    event = @hivent.Emitter.Cache.last
+    meta = %{name: "scraper:article:scraped"}
+    payload = %{
+      article: %{
+        id: augmented_article.id,
+        url: augmented_article.url,
+        title: augmented_article.title,
+        text: augmented_article.text,
+        html: augmented_article.html,
+        authors: augmented_article.authors,
+        source: augmented_article.source,
+        images: augmented_article.images
+      }
+    }
 
-    assert event
-    assert event.meta.name == "scraper:article:scraped"
-    assert event.payload.article.id == augmented_article.id
-    assert event.payload.article.url == augmented_article.url
-    assert event.payload.article.title == augmented_article.title
-    assert event.payload.article.text == augmented_article.text
-    assert event.payload.article.html == augmented_article.html
-    assert event.payload.article.authors == augmented_article.authors
-    assert event.payload.article.source == augmented_article.source
-    assert event.payload.article.images == augmented_article.images
+    assert @hivent.include?(payload, meta)
   end
 end

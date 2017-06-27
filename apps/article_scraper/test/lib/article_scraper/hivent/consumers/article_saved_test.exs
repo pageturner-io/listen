@@ -16,9 +16,9 @@ defmodule ArticleScraper.Hivent.Consumers.ArticleSavedTest do
       }
     }
 
-    @hivent.Emitter.Cache.clear
+    @hivent.clear
 
-    on_exit fn -> @hivent.Emitter.Cache.clear end
+    on_exit fn -> @hivent.clear end
 
     [payload: payload]
   end
@@ -27,18 +27,7 @@ defmodule ArticleScraper.Hivent.Consumers.ArticleSavedTest do
     Hivent.emit("listen:article:saved", payload, %{version: 1})
 
     wait_until 5_000, fn ->
-      event = @hivent.Emitter.Cache.last
-
-      assert event
-      assert event.meta.name == "scraper:article:scraped"
-      assert event.payload.article.id == payload["article"]["id"]
-      assert event.payload.article.url
-      assert event.payload.article.title
-      assert event.payload.article.text
-      assert event.payload.article.html
-      assert event.payload.article.authors
-      assert event.payload.article.source
-      assert event.payload.article.images
+      assert @hivent.include?(%{id: payload["article"]["id"]}, %{name: "scraper:article:scraped"})
     end
   end
 end
