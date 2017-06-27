@@ -50,7 +50,7 @@ defmodule Listen.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:guardian, "~> 0.14"},
-     {:hivent, "~> 2.0"},
+     {:hivent, "~> 2.1"},
      {:gen_stage, "~> 0.11"},
      {:ex_machina, "~> 1.0", only: :test}]
   end
