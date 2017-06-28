@@ -8,7 +8,19 @@ defmodule Listen.ReadingListTest do
 
   @hivent Application.get_env(:listen, :hivent)
 
-  @create_attrs %{url: "https://example.com"}
+  @create_attrs %{
+    url: "https://example.com",
+    title: "A title",
+    text: "Some text",
+    html: "<p>Some text</p>",
+    authors: [
+      %{name: "An author"}
+    ],
+    source: %{name: "The Source"},
+    images: [
+      %{url: "https://example.com/img.jpg"}
+    ],
+  }
   @invalid_attrs %{url: nil}
 
   setup do
@@ -25,19 +37,19 @@ defmodule Listen.ReadingListTest do
 
   def fixture(:article, user, attrs \\ @create_attrs) do
     {:ok, article} = ReadingList.create_article(attrs, user)
-    article
+    article |> Repo.preload([:authors, :images, :source])
   end
 
-  test "list_articles/1 returns all articles for the given user", %{user: user, other_user: other_user} do
-    article_1 = fixture(:article, user, %{url: "https://foo.bar"})
-    article_2 = fixture(:article, user, %{url: "https://bar.qux"})
-    fixture(:article, other_user, %{url: "https://zoo.log"})
+  test "list_articles/1 returns all scraped articles for the given user", %{user: user, other_user: other_user} do
+    article_1 = fixture(:article, user, %{@create_attrs | url: "https://foo.bar"})
+    article_2 = fixture(:article, user, %{@create_attrs | url: "https://bar.qux"})
+    fixture(:article, user, %{url: "https://example.com"})
+    fixture(:article, other_user, %{@create_attrs | url: "https://zoo.log"})
 
-    user_article_ids = Enum.map(ReadingList.list_articles(user), fn (a) -> a.id end)
-    expected_article_ids = Enum.map([article_1, article_2], fn (a) -> a.id end)
+    articles = ReadingList.list_articles(user)
+    |> Enum.map(fn (article) -> Repo.preload(article, :users) end)
 
-    assert user_article_ids == expected_article_ids
-
+    assert articles == [article_1, article_2]
   end
 
   test "get_article!/2 returns the article with given id", %{user: user} do
@@ -54,11 +66,25 @@ defmodule Listen.ReadingListTest do
     assert ReadingList.get_article(Ecto.UUID.generate(), user) == nil
   end
 
+  test "create_article/2 with valid data creates an Article", %{user: user} do
+    {:ok, %Article{} = article} = ReadingList.create_article(@create_attrs, user)
+
+    author_names = Enum.map(article.authors, fn (author) -> %{name: author.name} end)
+    image_urls = Enum.map(article.images, fn (image) -> %{url: image.url} end)
+
+    assert article.url == @create_attrs.url
+    assert article.title == @create_attrs.title
+    assert article.text == @create_attrs.text
+    assert article.html == @create_attrs.html
+    assert author_names == @create_attrs.authors
+    assert article.source.name == @create_attrs.source.name
+    assert image_urls == @create_attrs.images
+  end
+
   describe "when the article does not yet exist" do
     test "create_article/2 with valid data creates an Article and associates it with the given user", %{user: user} do
       {:ok, %Article{} = article} = ReadingList.create_article(@create_attrs, user)
 
-      assert article.url == @create_attrs.url
       assert Enum.member?(article.users, user)
     end
 

@@ -1,7 +1,10 @@
 <div class="page page--reading-list">
 <%= for article <- @articles do %>
   <article>
-    <%= link article.url, to: article.url, target: "_blank" %>
+    <%= link to: reading_list_path(@conn, :show, article) do %>
+      <h3><%= article.title %></h3>
+      <small><%= article.source.name %></small>
+    <% end %>
   </article>
 <% end %>
 </div>

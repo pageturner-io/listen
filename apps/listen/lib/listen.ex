@@ -14,7 +14,8 @@ defmodule Listen do
       supervisor(Listen.Web.Endpoint, []),
       # Start your own worker by calling: Listen.Worker.start_link(arg1, arg2, arg3)
       # worker(Listen.Worker, [arg1, arg2, arg3]),
-      worker(Listen.Hivent.Consumers.UserSignedIn, [])
+      worker(Listen.Hivent.Consumers.UserSignedIn, []),
+      worker(Listen.Hivent.Consumers.ArticleScraped, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

@@ -7,7 +7,19 @@ defmodule Listen.ReadingListControllerTest do
   alias Listen.ReadingList
   alias Listen.ReadingList.Article
 
-  @valid_attrs %{url: "https://example.com"}
+  @valid_attrs %{
+    url: "https://example.com",
+    title: "A title",
+    text: "Some text",
+    html: "<p>Some text</p>",
+    authors: [
+      %{name: "An author"}
+    ],
+    source: %{name: "The Source"},
+    images: [
+      %{url: "https://example.com/img.jpg"}
+    ],
+  }
   @invalid_attrs %{}
 
   def fixture(:article, user, attrs \\ @valid_attrs) do
@@ -44,12 +56,13 @@ defmodule Listen.ReadingListControllerTest do
       article = fixture(:article, user)
       fixture(:article, other_user)
 
-      other_article = fixture(:article, other_user, %{url: "https://foo.bar"})
+      other_article = fixture(:article, other_user, %{@valid_attrs | title: "Another title", url: "https://foo.bar"})
 
       conn = get conn, reading_list_path(conn, :index)
 
-      assert html_response(conn, 200) =~ article.url
-      refute html_response(conn, 200) =~ other_article.url
+      assert html_response(conn, 200) =~ article.title
+      assert html_response(conn, 200) =~ reading_list_path(conn, :show, article)
+      refute html_response(conn, 200) =~ other_article.title
     end
 
     test "renders form for new articles", %{conn: conn} do
@@ -58,13 +71,16 @@ defmodule Listen.ReadingListControllerTest do
       assert html_response(conn, 200) =~ gettext("Save new article")
     end
 
-    test "creates article and redirects when data is valid", %{conn: conn, user: user} do
+    test "creates article when data is valid", %{conn: conn, user: user} do
+      old_count = Repo.aggregate(Article, :count, :id)
+
       conn = post conn, reading_list_path(conn, :create), article: @valid_attrs
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == reading_list_path(conn, :show, id)
+      assert redirected_to(conn) == reading_list_path(conn, :index)
 
-      users = ReadingList.get_article!(id, user)
+      assert Repo.aggregate(Article, :count, :id) == old_count + 1
+
+      users = Repo.one(from a in Article, order_by: [desc: a.inserted_at], limit: 1)
       |> Repo.preload(:users)
       |> Map.get(:users)
 
@@ -91,7 +107,8 @@ defmodule Listen.ReadingListControllerTest do
       article = fixture(:article, user)
       conn = get conn, reading_list_path(conn, :show, article)
 
-      assert html_response(conn, 200) =~ "Show article"
+      assert html_response(conn, 200) =~ article.title
+      assert html_response(conn, 200) =~ article.html
     end
 
     test "renders page not found when id is nonexistent", %{conn: conn} do

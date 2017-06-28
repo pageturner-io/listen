@@ -11,17 +11,35 @@ defmodule Listen.ReadingList do
   @hivent Application.get_env(:listen, :hivent)
 
   def list_articles(user) do
-    Repo.preload(user, :articles).articles
+    Article
+    |> Article.scraped
+    |> Article.with_everything
+    |> Article.by_user(user)
+    |> Repo.all
   end
 
-  def get_article!(article_id, _user), do: Repo.get!(Article, article_id)
-  def get_article(article_id, _user), do: Repo.get(Article, article_id)
+  def get_article!(article_id, _user \\ nil) do
+    Article
+    |> Article.with_everything
+    |> Repo.get!(article_id)
+  end
+
+  def get_article(article_id, _user \\ nil) do
+    Article
+    |> Article.with_everything
+    |> Repo.get(article_id)
+  end
 
   def create_article(attrs = %{}, user) do
     %Article{}
     |> article_changeset(attrs)
     |> create_article_with_user(user)
     |> publish_article_saved_event
+  end
+
+  def update_article(article = %Article{}, attrs \\ %{}) do
+    change_article(article, attrs)
+    |> Repo.update
   end
 
   def remove_article(article, user) do
@@ -31,14 +49,17 @@ defmodule Listen.ReadingList do
     {:ok, article}
   end
 
-  def change_article(%Article{} = article \\ %Article{}) do
-    article_changeset(article, %{})
+  def change_article(%Article{} = article \\ %Article{}, changes \\ %{}) do
+    article_changeset(article, changes)
   end
 
   defp article_changeset(%Article{} = article, attrs) do
     article
-    |> cast(attrs, [:url])
+    |> cast(attrs, [:url, :title, :text, :html])
     |> validate_required([:url])
+    |> cast_assoc(:source)
+    |> cast_assoc(:authors)
+    |> cast_assoc(:images)
   end
 
   defp create_article_with_user(changeset, user) do
@@ -60,7 +81,7 @@ defmodule Listen.ReadingList do
     end
   end
 
-  defp publish_article_saved_event({:error, _ = error}), do: {:error, error}
+  defp publish_article_saved_event({:error, error}), do: {:error, error}
   defp publish_article_saved_event({:ok, %Article{} = article}) do
     [%User{} = user | _] = article.users
 
