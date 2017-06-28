@@ -10,7 +10,7 @@ defmodule Listen.Repo.Migrations.CreateSource do
     end
 
     alter table(:articles) do
-      add :source_id, references(:articles, type: :binary_id, on_delete: :nothing)
+      add :source_id, references(:sources, type: :binary_id, on_delete: :nothing)
     end
   end
 end
