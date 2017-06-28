@@ -7,7 +7,19 @@ defmodule Listen.ReadingListControllerTest do
   alias Listen.ReadingList
   alias Listen.ReadingList.Article
 
-  @valid_attrs %{url: "https://example.com"}
+  @valid_attrs %{
+    url: "https://example.com",
+    title: "A title",
+    text: "Some text",
+    html: "<p>Some text</p>",
+    authors: [
+      %{name: "An author"}
+    ],
+    source: %{name: "The Source"},
+    images: [
+      %{url: "https://example.com/img.jpg"}
+    ],
+  }
   @invalid_attrs %{}
 
   def fixture(:article, user, attrs \\ @valid_attrs) do
@@ -58,7 +70,6 @@ defmodule Listen.ReadingListControllerTest do
       assert html_response(conn, 200) =~ gettext("Save new article")
     end
 
-    @tag :wip
     test "creates article when data is valid", %{conn: conn, user: user} do
       old_count = Repo.aggregate(Article, :count, :id)
 
@@ -92,16 +103,7 @@ defmodule Listen.ReadingListControllerTest do
     end
 
     test "shows chosen article", %{conn: conn, user: user} do
-      scrape_data = %{
-        url: "https://example.com",
-        title: "A title",
-        text: "Lorem ipsum",
-        html: "<p>Lorem ipsum</p>",
-        authors: [%{name: "An author"}],
-        source: %{name: "The Internet"},
-        images: [%{url: "https://example.com/img.jpg"}]
-      }
-      article = fixture(:article, user, scrape_data)
+      article = fixture(:article, user)
       conn = get conn, reading_list_path(conn, :show, article)
 
       assert html_response(conn, 200) =~ article.title
