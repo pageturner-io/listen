@@ -56,12 +56,13 @@ defmodule Listen.ReadingListControllerTest do
       article = fixture(:article, user)
       fixture(:article, other_user)
 
-      other_article = fixture(:article, other_user, %{url: "https://foo.bar"})
+      other_article = fixture(:article, other_user, %{@valid_attrs | title: "Another title", url: "https://foo.bar"})
 
       conn = get conn, reading_list_path(conn, :index)
 
-      assert html_response(conn, 200) =~ article.url
-      refute html_response(conn, 200) =~ other_article.url
+      assert html_response(conn, 200) =~ article.title
+      assert html_response(conn, 200) =~ reading_list_path(conn, :show, article)
+      refute html_response(conn, 200) =~ other_article.title
     end
 
     test "renders form for new articles", %{conn: conn} do
