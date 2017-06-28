@@ -58,13 +58,17 @@ defmodule Listen.ReadingListControllerTest do
       assert html_response(conn, 200) =~ gettext("Save new article")
     end
 
-    test "creates article and redirects when data is valid", %{conn: conn, user: user} do
+    @tag :wip
+    test "creates article when data is valid", %{conn: conn, user: user} do
+      old_count = Repo.aggregate(Article, :count, :id)
+
       conn = post conn, reading_list_path(conn, :create), article: @valid_attrs
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == reading_list_path(conn, :show, id)
+      assert redirected_to(conn) == reading_list_path(conn, :index)
 
-      users = ReadingList.get_article!(id, user)
+      assert Repo.aggregate(Article, :count, :id) == old_count + 1
+
+      users = Repo.one(from a in Article, order_by: [desc: a.inserted_at], limit: 1)
       |> Repo.preload(:users)
       |> Map.get(:users)
 

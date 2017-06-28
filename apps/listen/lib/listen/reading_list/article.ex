@@ -23,6 +23,13 @@ defmodule Listen.ReadingList.Article do
   end
 
   # @doc """
+  # Queries articles that have been scraped, ie. have at least "text"
+  # """
+  def scraped(query) do
+    from a in query, where: not is_nil(a.text)
+  end
+
+  # @doc """
   # Queries articles with authors
   # """
   def with_authors(query) do

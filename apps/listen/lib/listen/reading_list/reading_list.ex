@@ -12,6 +12,7 @@ defmodule Listen.ReadingList do
 
   def list_articles(user) do
     Article
+    |> Article.scraped
     |> Article.with_everything
     |> Article.by_user(user)
     |> Repo.all
