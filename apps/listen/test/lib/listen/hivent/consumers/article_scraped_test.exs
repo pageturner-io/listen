@@ -15,7 +15,6 @@ defmodule Listen.Hivent.Consumers.ArticleScrapedTest do
     [article: article]
   end
 
-  @tag :wip
   test "it updates the article with scraped data", %{article: article} do
     payload = %{
       article: %{

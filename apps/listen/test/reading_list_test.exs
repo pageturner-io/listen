@@ -40,7 +40,6 @@ defmodule Listen.ReadingListTest do
     article |> Repo.preload([:authors, :images, :source])
   end
 
-  @tag :wip
   test "list_articles/1 returns all articles for the given user", %{user: user, other_user: other_user} do
     article_1 = fixture(:article, user, %{@create_attrs | url: "https://foo.bar"})
     article_2 = fixture(:article, user, %{@create_attrs | url: "https://bar.qux"})

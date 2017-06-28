@@ -88,10 +88,20 @@ defmodule Listen.ReadingListControllerTest do
     end
 
     test "shows chosen article", %{conn: conn, user: user} do
-      article = fixture(:article, user)
+      scrape_data = %{
+        url: "https://example.com",
+        title: "A title",
+        text: "Lorem ipsum",
+        html: "<p>Lorem ipsum</p>",
+        authors: [%{name: "An author"}],
+        source: %{name: "The Internet"},
+        images: [%{url: "https://example.com/img.jpg"}]
+      }
+      article = fixture(:article, user, scrape_data)
       conn = get conn, reading_list_path(conn, :show, article)
 
-      assert html_response(conn, 200) =~ "Show article"
+      assert html_response(conn, 200) =~ article.title
+      assert html_response(conn, 200) =~ article.html
     end
 
     test "renders page not found when id is nonexistent", %{conn: conn} do
