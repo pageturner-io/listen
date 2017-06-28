@@ -17,13 +17,13 @@ defmodule Listen.ReadingList do
     |> Repo.all
   end
 
-  def get_article!(article_id, _user) do
+  def get_article!(article_id, _user \\ nil) do
     Article
     |> Article.with_everything
     |> Repo.get!(article_id)
   end
 
-  def get_article(article_id, _user) do
+  def get_article(article_id, _user \\ nil) do
     Article
     |> Article.with_everything
     |> Repo.get(article_id)
@@ -36,6 +36,11 @@ defmodule Listen.ReadingList do
     |> publish_article_saved_event
   end
 
+  def update_article(article = %Article{}, attrs \\ %{}) do
+    change_article(article, attrs)
+    |> Repo.update
+  end
+
   def remove_article(article, user) do
     from(entry in UserArticle, where: entry.user_id == ^user.id and entry.article_id == ^article.id)
     |> Repo.delete_all
@@ -43,8 +48,8 @@ defmodule Listen.ReadingList do
     {:ok, article}
   end
 
-  def change_article(%Article{} = article \\ %Article{}) do
-    article_changeset(article, %{})
+  def change_article(%Article{} = article \\ %Article{}, changes \\ %{}) do
+    article_changeset(article, changes)
   end
 
   defp article_changeset(%Article{} = article, attrs) do
