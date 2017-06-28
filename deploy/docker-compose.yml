@@ -39,6 +39,7 @@ services:
     command: mix ecto.setup
     networks:
       - back
+      - hivent_front
     environment:
       DATABASE_URL: postgres://postgres@listen_db/listen
       POOL_SIZE: 1
