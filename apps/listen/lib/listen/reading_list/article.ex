@@ -2,7 +2,7 @@ defmodule Listen.ReadingList.Article do
   use Ecto.Schema
 
   alias Listen.Accounts.User
-  alias Listen.ReadingList.{Source, UserArticle}
+  alias Listen.ReadingList.{Author, AuthorArticle, Source, UserArticle}
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -13,6 +13,7 @@ defmodule Listen.ReadingList.Article do
     field :html, :string
 
     many_to_many :users, User, join_through: UserArticle, on_delete: :delete_all, on_replace: :delete
+    many_to_many :authors, Author, join_through: AuthorArticle, on_delete: :delete_all, on_replace: :delete
     has_many :sources, Source
 
     timestamps()
