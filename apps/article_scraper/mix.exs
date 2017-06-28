@@ -39,8 +39,8 @@ defmodule ArticleScraper.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:hivent, "~> 2.1"},
-     {:poison, "~> 2.0"},
+    [{:hivent, "~> 2.2"},
+     {:poison, "~> 3.1"},
      {:readability, "~> 0.8.0"}]
   end
 end
