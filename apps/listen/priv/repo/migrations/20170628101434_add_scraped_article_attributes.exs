@@ -4,8 +4,8 @@ defmodule Listen.Repo.Migrations.AddScrapedArticleAttributes do
   def change do
     alter table(:articles) do
       add :title, :string
-      add :text, :string
-      add :html, :string
+      add :text, :text
+      add :html, :text
     end
   end
 end
