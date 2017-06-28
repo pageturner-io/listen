@@ -8,6 +8,9 @@ defmodule Listen.ReadingList.Article do
   @foreign_key_type :binary_id
   schema "articles" do
     field :url, :string
+    field :title, :string
+    field :text, :string
+    field :html, :string
 
     many_to_many :users, User, join_through: UserArticle, on_delete: :delete_all, on_replace: :delete
 
